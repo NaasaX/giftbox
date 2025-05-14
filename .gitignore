@@ -1,3 +1,4 @@
 *.ini
+src/conf/*.ini
 public/.htaccess
 .idea/
