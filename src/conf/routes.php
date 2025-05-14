@@ -19,8 +19,8 @@ return function(App $app): App {
   // Route 1 : GET /categories
   $app->get('/categories', GetCategoriesAction::class);
 
-  // Route 2 : GET /categorie/{id}
-  $app->get('/categorie/{id}', GetCategorieAction::class);
+  // Route 2 : GET /categories/{id}
+  $app->get('/categories/{id}', GetCategorieAction::class);
 
   // Route 3 : GET /prestation?id=xxxx
   $app->get('/prestation', GetPrestationAction::class);
