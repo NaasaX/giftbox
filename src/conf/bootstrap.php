@@ -1,0 +1,32 @@
+<?php
+declare(strict_types=1);
+
+use Slim\Factory\AppFactory;
+use gift\utils\Eloquent;
+use Slim\Middleware\ErrorMiddleware;
+
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+// Initialiser Eloquent
+Eloquent::init(__DIR__ . '/gift.db.conf.ini');
+
+// Créer l'application
+$app = AppFactory::create();
+
+// Ajouter le middleware de routing
+$app->addRoutingMiddleware();
+
+// Ajouter le middleware d’erreur
+$app->add(new ErrorMiddleware(
+    $app->getCallableResolver(),
+    $app->getResponseFactory(),
+    true, // afficher erreurs
+    true, // logger erreurs
+    true  // logger détails
+));
+
+// Charger les routes
+$app = (require_once __DIR__ . '/routes.php')($app);
+
+// Retourner l’application configurée
+return $app;
