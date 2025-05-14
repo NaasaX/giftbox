@@ -7,27 +7,32 @@ use gift\models\Categorie;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpBadRequestException;
+use Slim\Views\Twig;
 
 class GetCategorieAction {
     public function __invoke(Request $request, Response $response, array $args): Response {
         try {
-            $categorie = Categorie::find($args['id']);
+            $id = $args['id'] ?? null;
 
-            if (!$categorie) {
-                //$response->getBody()->write("Catégorie non trouvée.");
-                //return $response->withStatus(404);
+            if (!$id) {
                 throw new \InvalidArgumentException("Erreur : paramètre 'id' manquant dans l'URL.");
             }
 
-            $html = <<<HTML
-                <h1>Catégorie : {$categorie->libelle}</h1>
-                <p>{$categorie->description}</p>
-            HTML;
+            $categorie = Categorie::find($id);
 
-            $response->getBody()->write($html);
-            return $response;
+            if (!$categorie) {
+                $response->getBody()->write("Catégorie non trouvée.");
+                return $response->withStatus(404);
+            }
+
+            // Rendu avec Twig
+            $twig = Twig::fromRequest($request);
+            return $twig->render($response, 'categorie.twig', [
+                'categorie' => $categorie,
+                'prestations' => $categorie->prestations,
+            ]);
+
         } catch (\InvalidArgumentException $e) {
-
             throw new HttpBadRequestException($request, $e->getMessage());
 
         } catch (\Exception $e) {

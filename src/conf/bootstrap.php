@@ -4,6 +4,8 @@ declare(strict_types=1);
 use Slim\Factory\AppFactory;
 use gift\utils\Eloquent;
 use Slim\Middleware\ErrorMiddleware;
+use Slim\Views\Twig;
+use Slim\Views\TwigMiddleware;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
@@ -12,6 +14,9 @@ Eloquent::init(__DIR__ . '/gift.db.conf.ini');
 
 // Créer l'application
 $app = AppFactory::create();
+
+$twig = Twig::create(__DIR__ . '/../views', ['cache' => false]);
+$app->add(TwigMiddleware::create($app, $twig));
 
 // Ajouter le middleware de routing
 $app->addRoutingMiddleware();
