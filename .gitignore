@@ -1,0 +1,39 @@
+# Composer dependencies
+/vendor/
+
+# Slim Framework cache
+/cache/
+
+# Environment files
+.env
+.env.*
+
+# IDE files
+/.idea/
+/.vscode/
+/*.sublime-project
+/*.sublime-workspace
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# PHPUnit
+/phpunit.xml
+/phpunit.xml.dist
+
+# Coverage reports
+/coverage/
+
+# Node modules (if using frontend tools)
+/node_modules/
+
+# Build artifacts
+/dist/
+/build/
+
+# INI files
+*.ini
