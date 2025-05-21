@@ -6,36 +6,23 @@ namespace gift\actions;
 use gift\models\Categorie;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Exception\HttpBadRequestException;
+use Slim\Views\Twig;
 
 class GetCategoriesAction {
     public function __invoke(Request $request, Response $response, array $args): Response {
         try {
             $categories = Categorie::all();
 
-            $html = <<<HTML
-                <h1>Liste des catégories</h1>
-                <ul>
-            HTML;
+            // Rendu avec Twig
+            $twig = Twig::fromRequest($request);
+            return $twig->render($response, 'list_categorie.twig', [
+                'categories' => $categories,
+            ]);
 
-            foreach ($categories as $cat) {
-                $url = "/categorie/{$cat->id}";
-                $html .= <<<HTML
-                    <li>
-                        [{$cat->id}] <a href="$url">{$cat->libelle}</a>
-                    </li>
-                HTML;
-            }
-
-            $html .= <<<HTML
-                </ul>
-            HTML;
-
-            $response->getBody()->write($html);
         } catch (\Exception $e) {
-            $response->getBody()->write('<h1>Une erreur est survenue lors de la récupération des catégories.</h1>');
-            $response = $response->withStatus(500);
+            $response->getBody()->write("Une erreur est survenue : " . $e->getMessage());
+            return $response->withStatus(500);
         }
-
-        return $response;
     }
 }

@@ -1,0 +1,14 @@
+<h1>Liste des catégories</h1>
+
+<ul>
+    {% for c in categories %}
+        <li>
+            <a href="/categories/{{ c.id }}">
+                <strong>{{ c.libelle }}</strong>
+            </a><br>
+            <small>{{ c.description }}</small>
+        </li>
+    {% else %}
+        <li>Aucune catégorie disponible.</li>
+    {% endfor %}
+</ul>

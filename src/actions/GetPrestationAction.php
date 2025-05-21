@@ -7,8 +7,9 @@ use gift\models\Prestation;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpBadRequestException;
-use Slim\Exception\HttpException;
 use Slim\Exception\HttpInternalServerErrorException;
+use Slim\Exception\HttpException;
+use Slim\Views\Twig;
 
 class GetPrestationAction {
     public function __invoke(Request $request, Response $response, array $args): Response {
@@ -20,19 +21,17 @@ class GetPrestationAction {
                 throw new \InvalidArgumentException("Erreur : paramètre 'id' manquant dans l'URL.");
             }
 
-            $prestation = Prestation::where('id', $id)->first();
+            $prestation = Prestation::with('categorie')->find($id);
             if (!$prestation) {
                 throw new \RuntimeException("Erreur : prestation introuvable.");
             }
 
-            $html = <<<HTML
-                <h1>{$prestation->libelle}</h1>
-                <p>{$prestation->description}</p>
-                <p>Tarif : {$prestation->tarif} €</p>
-            HTML;
+            // Rendu avec Twig
+            $twig = Twig::fromRequest($request);
+            return $twig->render($response, 'prestation.twig', [
+                'prestation' => $prestation
+            ]);
 
-            $response->getBody()->write($html);
-            return $response;
         } catch (\InvalidArgumentException $e) {
             throw new HttpBadRequestException($request, $e->getMessage());
         } catch (\RuntimeException $e) {

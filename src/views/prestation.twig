@@ -1,0 +1,11 @@
+<h1>{{ prestation.libelle }}</h1>
+    <p><strong>Tarif :</strong> {{ prestation.tarif }} €</p>
+    <p><strong>Description :</strong> {{ prestation.description }}</p>
+
+    {% if prestation.categorie %}
+        <p><strong>Catégorie :</strong> 
+            <a href="/categories/{{ prestation.categorie.id }}">
+                {{ prestation.categorie.libelle }}
+            </a>
+        </p>
+    {% endif %}
