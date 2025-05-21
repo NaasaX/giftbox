@@ -1,14 +1,19 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+
 <h1>Liste des catégories</h1>
 
 <ul>
-    {% for c in categories %}
+    {% for categorie in categories %}
         <li>
-            <a href="/categories/{{ c.id }}">
-                <strong>{{ c.libelle }}</strong>
+            <a href="/categories/{{ categorie.id }}">
+                <strong>{{ categorie.libelle }}</strong>
             </a><br>
-            <small>{{ c.description }}</small>
+            <small>{{ categorie.description }}</small>
         </li>
     {% else %}
         <li>Aucune catégorie disponible.</li>
     {% endfor %}
 </ul>
+{% endblock %}

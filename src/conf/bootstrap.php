@@ -16,6 +16,13 @@ Eloquent::init(__DIR__ . '/gift.db.conf.ini');
 $app = AppFactory::create();
 
 $twig = Twig::create(__DIR__ . '/../views', ['cache' => false]);
+$twig->getEnvironment()->addGlobal('assets_css', '/css');
+$twig->getEnvironment()->addGlobal('assets_img', '/img');
+$twig->getEnvironment()->addGlobal('nav_items', [
+    ['url' => '/', 'label' => 'Accueil'],
+    ['url' => '/categories', 'label' => 'Liste des catégories']
+]);
+
 $app->add(TwigMiddleware::create($app, $twig));
 
 // Ajouter le middleware de routing

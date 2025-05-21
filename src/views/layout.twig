@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Giftbox{% endblock %}</title>
+    <link rel="stylesheet" href="{{ assets_css }}/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            {% block header %}
+                <h1>Giftbox</h1>
+            {% endblock %}
+        </header>
+        <nav>
+            <ul>
+                {% for item in nav_items %}
+                    <li><a href="{{ item.url }}">{{ item.label }}</a></li>
+                {% endfor %}
+            </ul>
+        </nav>
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+        <footer>
+            {% block footer %}
+                <small>2024 Giftbox - IUT Nancy-Charlemagne</small>
+            {% endblock %}
+        </footer>
+    </div>
+</body>
+</html>

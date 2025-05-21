@@ -25,10 +25,9 @@ class GetCategorieAction {
                 return $response->withStatus(404);
             }
 
-            // Rendu avec Twig
             $twig = Twig::fromRequest($request);
             return $twig->render($response, 'categorie.twig', [
-                'categories' => $categorie,
+                'categorie' => $categorie,
                 'prestations' => $categorie->prestations,
             ]);
 
