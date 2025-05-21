@@ -1,6 +1,9 @@
 <?php
 declare(strict_types=1);
 
+use gift\actions\GetCoffretAction;
+use gift\actions\GetCoffretsAction;
+use gift\actions\GetHomePageAction;
 use Slim\App;
 use gift\actions\GetCategoriesAction;
 use gift\actions\GetCategorieAction;
@@ -11,10 +14,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 return function(App $app): App {
 
   // Route 0 : GET /
-  $app->get('/', function(Request $request, Response $response) {
-      $response->getBody()->write("Bienvenue sur l'application");
-      return $response;
-  });
+  $app->get('/', GetHomePageAction::class);
 
   // Route 1 : GET /categories
   $app->get('/categories', GetCategoriesAction::class);
@@ -25,5 +25,17 @@ return function(App $app): App {
   // Route 3 : GET /prestation?id=xxxx
   $app->get('/prestation', GetPrestationAction::class);
 
-  return $app;
+  // Route 4 : GET /coffrets
+  $app->get('/coffrets', GetCoffretsAction::class);
+
+  $app->get('/coffrets/{id}', GetCoffretAction::class);
+
+  // Route 4 : GET /categories/{cat_id}/prestations/{id_prestation}
+    $app->get('/categories/{cat_id}/prestations/{presta_id}', function ($request, $response, $args) {
+        $cat_id = $args['cat_id'];
+        $presta_id = $args['presta_id'];
+    });
+
+
+    return $app;
 };

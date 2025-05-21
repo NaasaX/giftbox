@@ -29,6 +29,7 @@ class GetCategorieAction {
             return $twig->render($response, 'categorie.twig', [
                 'categorie' => $categorie,
                 'prestations' => $categorie->prestations,
+                'id' => $id,
             ]);
 
         } catch (\InvalidArgumentException $e) {

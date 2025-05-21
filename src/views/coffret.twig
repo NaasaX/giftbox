@@ -1,0 +1,10 @@
+<h2>{{ coffret.libelle }}</h2>
+
+<p>{{ coffret.description }}</p>
+<ul>
+    {% for p in prestations %}
+        <li> {{ p.libelle }} - {{ p.description }} </li>
+    {% else %}
+        <li>Aucune prestation disponible.</li>
+    {% endfor %}
+</ul>

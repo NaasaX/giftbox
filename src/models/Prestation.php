@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 class Prestation extends Model {
     protected $table = 'prestation';
     protected $primaryKey = 'id';
+    public $incrementing = false; // ❗ UUID → pas d’auto-incrément
+    protected $keyType = 'string'; // ❗ UUID → type string
     public $timestamps = false;
 
 
