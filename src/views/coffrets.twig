@@ -1,0 +1,8 @@
+<h2>Coffrets</h2>
+<ul>
+    {% for c in coffret %}
+        <li><a href="/coffrets/{{ c.id }}"> {{ c.libelle }} </a></li>
+    {% else %}
+        <li>Aucune prestation disponible.</li>
+    {% endfor %}
+</ul>
