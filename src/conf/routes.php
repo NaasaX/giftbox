@@ -30,5 +30,12 @@ return function(App $app): App {
 
   $app->get('/coffrets/{id}', GetCoffretAction::class);
 
-  return $app;
+  // Route 4 : GET /categories/{cat_id}/prestations/{id_prestation}
+    $app->get('/categories/{cat_id}/prestations/{presta_id}', function ($request, $response, $args) {
+        $cat_id = $args['cat_id'];
+        $presta_id = $args['presta_id'];
+    });
+
+
+    return $app;
 };

@@ -3,9 +3,21 @@
 
 <h2>Prestations</h2>
 <ul>
-    {% for p in prestations %}
-        <li>{{ p.libelle }} - {{ p.tarif }} €</li>
-    {% else %}
-        <li>Aucune prestation disponible.</li>
-    {% endfor %}
+        {% for p in prestations %}
+                <li>
+                        <a href="/prestation?id={{ p.id }}">
+                                {{ p.libelle }} - {{ p.tarif }} €
+                        </a>
+                </li>
+        {% else %}
+                <li>Aucune prestation disponible.</li>
+        {% endfor %}
 </ul>
+
+<button onclick="retour()">Retour</button>
+
+<script>
+    function retour() {
+        window.history.back();
+    }
+</script>
