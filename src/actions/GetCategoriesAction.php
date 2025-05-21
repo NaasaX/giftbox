@@ -18,7 +18,7 @@ class GetCategoriesAction {
             HTML;
 
             foreach ($categories as $cat) {
-                $url = "/categorie/{$cat->id}";
+                $url = "/categories/{$cat->id}";
                 $html .= <<<HTML
                     <li>
                         [{$cat->id}] <a href="$url">{$cat->libelle}</a>
