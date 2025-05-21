@@ -14,7 +14,7 @@ return function(App $app): App {
   $app->get('/', function(Request $request, Response $response) {
       $response->getBody()->write("Bienvenue sur l'application");
       return $response;
-  }); 
+  });
 
   // Route 1 : GET /categories
   $app->get('/categories', GetCategoriesAction::class);
