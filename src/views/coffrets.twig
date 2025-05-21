@@ -1,3 +1,7 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+
 <h2>Coffrets</h2>
 <ul>
     {% for c in coffret %}
@@ -6,3 +10,4 @@
         <li>Aucune prestation disponible.</li>
     {% endfor %}
 </ul>
+{% endblock %}

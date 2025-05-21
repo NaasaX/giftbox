@@ -1,3 +1,7 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+
 <h2>{{ coffret.libelle }}</h2>
 
 <p>{{ coffret.description }}</p>
@@ -8,3 +12,4 @@
         <li>Aucune prestation disponible.</li>
     {% endfor %}
 </ul>
+{% endblock %}
