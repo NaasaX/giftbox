@@ -13,4 +13,13 @@
             <li>Aucune prestation disponible.</li>
         {% endfor %}
     </ul>
+
+    <button class="back-btn" onclick="retour()">Retour</button>
+
+    <script>
+        function retour() {
+            window.history.back();
+        }
+    </script>
+
 {% endblock %}
