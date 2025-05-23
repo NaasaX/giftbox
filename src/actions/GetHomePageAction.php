@@ -39,9 +39,7 @@ class GetHomePageAction {
         // HTML;
 
         $twig = Twig::fromRequest($request);
-            return $twig->render($response, 'index.twig', [
-                'prestation' => $prestation
-            ]);
+            return $twig->render($response, 'index.twig');
 
         $response->getBody()->write($html);
         return $response;

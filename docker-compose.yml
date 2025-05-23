@@ -5,7 +5,7 @@ networks:
 services:
   mysql-db:
     image: mysql:8.0
-    container_name: mysql-db
+    container_name: mysql
     restart: unless-stopped
     ports:
       - "3306:3306"
@@ -17,12 +17,12 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: my-phpmyadmin
+    container_name: phpmyadmin
     restart: unless-stopped
     ports:
       - "8080:80"
     environment:
-      PMA_HOST: mysql-db
+      PMA_HOST: mysql
       PMA_USER: root
       PMA_PASSWORD: root
     depends_on:
@@ -33,11 +33,11 @@ services:
       context: build
       dockerfile: 8.4-cli.Dockerfile
     ports:
-      - "5080:80"
+      - "6969:80"
     volumes:
       - ./:/var/php
       - ./imgs:/var/php/public/img
-    working_dir: /var/php/src
+    working_dir: /var/php
     networks:
       - gift.net
     depends_on:
