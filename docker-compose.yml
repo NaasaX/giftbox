@@ -6,10 +6,10 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: giftbox
-      MYSQL_USER: clem
-      MYSQL_PASSWORD: admin
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
     volumes:
       - mysql_data:/var/lib/mysql
 
@@ -21,8 +21,8 @@ services:
       - "8080:80"
     environment:
       PMA_HOST: mysql-db
-      PMA_USER: clem
-      PMA_PASSWORD: admin
+      PMA_USER: root
+      PMA_PASSWORD: root
     depends_on:
       - mysql-db
 
@@ -32,7 +32,7 @@ services:
       dockerfile: 8.4-cli.Dockerfile
     ports:
       - "1234:80"
-    volumes :
+    volumes:
       - ./:/var/php
       - ./imgs:/var/php/public/img
     working_dir: /var/php/src
