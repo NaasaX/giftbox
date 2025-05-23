@@ -1,0 +1,46 @@
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: giftbox
+      MYSQL_USER: clem
+      MYSQL_PASSWORD: admin
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: my-phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql-db
+      PMA_USER: clem
+      PMA_PASSWORD: admin
+    depends_on:
+      - mysql-db
+
+  app:
+    build:
+      context: build
+      dockerfile: 8.4-cli.Dockerfile
+    ports:
+      - "1234:80"
+    volumes :
+      - ./:/var/php
+      - ./imgs:/var/php/public/img
+    working_dir: /var/php/src
+    networks:
+      - gift.net
+    depends_on:
+      - sql
+    command: sh -c "composer install && php -S 0.0.0.0:80 -t /var/php/public"
+
+volumes:
+  mysql_data:

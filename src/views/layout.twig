@@ -22,21 +22,25 @@
         <main>
             {% block content %}{% endblock %}
         </main>
-        <footer>
-            {% block footer %}
-                <small>2025 Giftbox &copy; - IUT Nancy-Charlemagne</small>
-
-                <style>
-                    footer {
-                        position: fixed;
-                        bottom: 1%;
-                        left: 50%;
-                        transform: translateX(-50%);
-                        text-align: center;
-                    }
-                </style>
-            {% endblock %}
-        </footer>
+        <div class="footer-container">
+            <footer>
+                {% block footer %}
+                    <small>2025 Giftbox &copy; - IUT Nancy-Charlemagne</small>
+                {% endblock %}
+            </footer>
+        </div>
     </div>
 </body>
 </html>
+
+<style>
+    .footer-container {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    footer {
+        background: #d9d6ff;
+    }
+</style>

@@ -153,8 +153,14 @@
         <p>Aucune catégorie disponible.</p>
     {% endfor %}
 </div>
+<button class="back-btn" onclick="retour()">Retour</button>
 
 <script>
+
+    function retour() {
+        window.history.back();
+    }
+
     document.querySelectorAll('.flipBtn').forEach(btn => {
         btn.addEventListener('click', function() {
             const card = document.getElementById('card-' + this.dataset.id);
