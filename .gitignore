@@ -33,7 +33,6 @@ Thumbs.db
 
 # Build artifacts
 /dist/
-/build/
 
 # INI files
 *.ini

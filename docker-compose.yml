@@ -12,8 +12,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: giftbox
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
     volumes:
       - mysql_data:/var/lib/mysql
 
@@ -35,7 +33,7 @@ services:
       context: build
       dockerfile: 8.4-cli.Dockerfile
     ports:
-      - "1234:80"
+      - "5080:80"
     volumes:
       - ./:/var/php
       - ./imgs:/var/php/public/img
@@ -43,7 +41,7 @@ services:
     networks:
       - gift.net
     depends_on:
-      - sql
+      - mysql-db
     command: sh -c "composer install && php -S 0.0.0.0:80 -t /var/php/public"
 
 volumes:
