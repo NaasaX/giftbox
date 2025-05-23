@@ -1,3 +1,7 @@
+networks:
+  gift.net:
+    driver: bridge
+
 services:
   mysql-db:
     image: mysql:8.0
