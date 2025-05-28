@@ -1,13 +1,13 @@
 <?php
-namespace gift\models;
+namespace gift\application_core\domain\entities;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Prestation extends Model {
     protected $table = 'prestation';
     protected $primaryKey = 'id';
-    public $incrementing = false; // ❗ UUID → pas d’auto-incrément
-    protected $keyType = 'string'; // ❗ UUID → type string
+    public $incrementing = false;
+    protected $keyType = 'string';
     public $timestamps = false;
 
 

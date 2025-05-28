@@ -1,6 +1,6 @@
 <?php
 
-namespace gift\models;
+namespace gift\application_core\domain\entities;
 
 use Illuminate\Database\Eloquent\Model;
 

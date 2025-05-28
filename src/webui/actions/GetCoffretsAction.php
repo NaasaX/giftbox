@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace gift\actions;
+namespace gift\webui\actions;
 
 use gift\models\Coffret_type;
 use Psr\Http\Message\ResponseInterface as Response;
