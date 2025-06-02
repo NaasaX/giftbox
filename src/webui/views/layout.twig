@@ -14,26 +14,18 @@
             <hr/>
         </div>
         <div id="nav-content">
-        <div class="nav-button">
+            <a href="/" class="nav-button">
                 <i class="fas fa-home"></i>
-                <a href="/">
-                    <span>Accueil</span>
+                <span>Accueil</span>
             </a>
-        </div>
-        <div class="nav-button">
+            <a href="/categories" class="nav-button">
                 <i class="fas fa-list"></i>
-                                <a href="/categories">
-
                 <span>Liste catégories</span>
             </a>
-        </div>
-        <div class="nav-button">
+            <a href="/coffrets" class="nav-button">
                 <i class="fas fa-box"></i>
-                                                <a href="/coffrets">
-
                 <span>Coffrets</span>
             </a>
-        </div>
         </div>
         <div id="nav-footer">
             <div id="nav-footer-heading">
@@ -47,7 +39,6 @@
     </div>
 
     <div class="container">
-    
         <main>
             {% block content %}{% endblock %}
         </main>
@@ -121,6 +112,7 @@ body {
     align-items: center;
     padding: 12px 24px;
     color: #fff;
+    text-decoration: none;
     cursor: pointer;
     transition: background 0.2s;
 }
@@ -131,18 +123,13 @@ body {
 
 .nav-button:hover {
     background: #34495e;
-}
-
-.nav-button a {
-    color: inherit;
+    color: #fff;
     text-decoration: none;
-    transition: none;
 }
 
-.nav-button a:active,
-.nav-button a:focus,
-.nav-button a:hover {
-    color: inherit;
+.nav-button:active,
+.nav-button:focus {
+    color: #fff;
     text-decoration: none;
     outline: none;
 }
