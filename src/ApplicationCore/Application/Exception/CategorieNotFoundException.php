@@ -1,4 +1,4 @@
 <?php
-namespace Giftbox\Application\Exceptions;
+namespace Giftbox\ApplicationCore\Application\Exceptions;
 
 class CategorieNotFoundException extends \Exception {}

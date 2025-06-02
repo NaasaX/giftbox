@@ -1,6 +1,6 @@
 <?php
 
-namespace Giftbox\Application\UseCases;
+namespace Giftbox\ApplicationCore\Application\UseCases;
 
 interface CatalogueServiceInterface
 {

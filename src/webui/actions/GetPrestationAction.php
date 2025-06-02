@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace gift\webui\actions;
+namespace Giftbox\WebUI\Actions;
 
-use gift\models\Prestation;
+use Giftbox\ApplicationCore\Domain\Entities\Prestation;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpBadRequestException;

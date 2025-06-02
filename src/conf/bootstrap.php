@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 use Slim\Factory\AppFactory;
-use gift\utils\Eloquent;
+use Giftbox\Utils\Eloquent;
 use Slim\Middleware\ErrorMiddleware;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
@@ -15,7 +15,7 @@ Eloquent::init(__DIR__ . '/gift.db.conf.ini');
 // Créer l'application
 $app = AppFactory::create();
 
-$twig = Twig::create(__DIR__ . '/../views', ['cache' => false]);
+$twig = Twig::create(__DIR__ . '/../webui/views', ['cache' => false]);
 $twig->getEnvironment()->addGlobal('assets_css', '/css');
 $twig->getEnvironment()->addGlobal('assets_img', '/img');
 $twig->getEnvironment()->addGlobal('nav_items', [

@@ -35,10 +35,6 @@ class ComposerStaticInit4343948420c200504963dbcc2dc09f64
         array (
             'voku\\' => 5,
         ),
-        'g' => 
-        array (
-            'gift\\' => 5,
-        ),
         'T' => 
         array (
             'Twig\\' => 5,
@@ -83,6 +79,10 @@ class ComposerStaticInit4343948420c200504963dbcc2dc09f64
             'Illuminate\\Contracts\\' => 21,
             'Illuminate\\Container\\' => 21,
         ),
+        'G' => 
+        array (
+            'Giftbox\\' => 8,
+        ),
         'F' => 
         array (
             'Fig\\Http\\Message\\' => 17,
@@ -109,10 +109,6 @@ class ComposerStaticInit4343948420c200504963dbcc2dc09f64
         'voku\\' => 
         array (
             0 => __DIR__ . '/..' . '/voku/portable-ascii/src/voku',
-        ),
-        'gift\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/src',
         ),
         'Twig\\' => 
         array (
@@ -222,6 +218,10 @@ class ComposerStaticInit4343948420c200504963dbcc2dc09f64
         'Illuminate\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/illuminate/container',
+        ),
+        'Giftbox\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src',
         ),
         'Fig\\Http\\Message\\' => 
         array (

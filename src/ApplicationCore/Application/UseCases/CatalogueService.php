@@ -1,9 +1,10 @@
 <?php
-namespace Giftbox\Application\UseCases;
+namespace Giftbox\ApplicationCore\Application\UseCases;
 
-use Giftbox\Application\Exceptions\CategorieNotFoundException;
-use Giftbox\Application\Exceptions\PrestationNotFoundException;
-use Giftbox\Application\Exceptions\CoffretNotFoundException;
+use Giftbox\ApplicationCore\Application\Exceptions\CategorieNotFoundException;
+use Giftbox\ApplicationCore\Application\Exceptions\PrestationNotFoundException;
+use Giftbox\ApplicationCore\Application\Exceptions\CoffretNotFoundException;
+
 
 class CatalogueService implements CatalogueServiceInterface
 {

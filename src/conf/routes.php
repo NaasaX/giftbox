@@ -1,15 +1,18 @@
 <?php
 declare(strict_types=1);
 
-use gift\actions\GetCoffretAction;
-use gift\actions\GetCoffretsAction;
-use gift\actions\GetHomePageAction;
 use Slim\App;
-use gift\actions\GetCategoriesAction;
-use gift\actions\GetCategorieAction;
-use gift\actions\GetPrestationAction;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
+
+use Giftbox\WebUI\Actions\GetHomePageAction;
+use Giftbox\WebUI\Actions\GetCategoriesAction;
+use Giftbox\WebUI\Actions\GetCategorieAction;
+use Giftbox\WebUI\Actions\GetPrestationAction;
+use Giftbox\WebUI\Actions\GetCoffretsAction;
+use Giftbox\WebUI\Actions\GetCoffretAction;
+
+
 
 return function(App $app): App {
 

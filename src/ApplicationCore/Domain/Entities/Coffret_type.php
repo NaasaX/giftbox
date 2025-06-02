@@ -1,8 +1,9 @@
 <?php
 
-namespace gift\application_core\domain\entities;
+namespace Giftbox\ApplicationCore\Domain\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Giftbox\ApplicationCore\Domain\Entities\Prestation;
 
 class Coffret_type extends Model {
     protected $table = 'coffret_type';

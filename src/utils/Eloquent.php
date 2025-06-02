@@ -1,5 +1,5 @@
 <?php
-namespace gift\utils;
+namespace Giftbox\Utils;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 

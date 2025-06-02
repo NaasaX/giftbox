@@ -1,14 +1,15 @@
 <?php
 declare(strict_types = 1);
 
-namespace gift\webui\actions;
+namespace Giftbox\WebUI\Actions;
 
-use gift\models\Coffret_type;
+use Giftbox\ApplicationCore\Domain\Entities\Coffret_type;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
 use Slim\Views\Twig;
+
 
 class GetCoffretsAction{
 
