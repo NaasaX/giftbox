@@ -1,3 +1,7 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+
 <h1>{{ prestation.libelle }}</h1>
     <p><strong>Tarif :</strong> {{ prestation.tarif }} €</p>
     <p><strong>Description :</strong> {{ prestation.description }}</p>
@@ -16,3 +20,5 @@
         window.history.back();
     }
 </script>
+
+{% endblock %}

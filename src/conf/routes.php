@@ -1,17 +1,18 @@
 <?php
 declare(strict_types=1);
 
+use Giftbox\webui\actions\Get\GetBoxByUserID;
+use Giftbox\webui\actions\Get\GetCategorieAction;
+use Giftbox\webui\actions\Get\GetCategoriesAction;
+use Giftbox\webui\actions\Get\GetCoffretAction;
+use Giftbox\webui\actions\Get\GetCoffretsAction;
+use Giftbox\webui\actions\Get\GetCreateCustomBoxAction;
+use Giftbox\webui\actions\Get\GetCreateNewBoxAction;
+use Giftbox\webui\actions\Get\GetHomePageAction;
+use Giftbox\webui\actions\Get\GetPrestationAction;
+use Giftbox\webui\actions\Get\GetBoxDetails;
+use Giftbox\webui\actions\Post\PostSaveCustomBoxAction;
 use Slim\App;
-use \Psr\Http\Message\ServerRequestInterface as Request;
-use \Psr\Http\Message\ResponseInterface as Response;
-
-use Giftbox\WebUI\Actions\GetHomePageAction;
-use Giftbox\WebUI\Actions\GetCategoriesAction;
-use Giftbox\WebUI\Actions\GetCategorieAction;
-use Giftbox\WebUI\Actions\GetPrestationAction;
-use Giftbox\WebUI\Actions\GetCoffretsAction;
-use Giftbox\WebUI\Actions\GetCoffretAction;
-
 
 
 return function(App $app): App {
@@ -33,7 +34,17 @@ return function(App $app): App {
 
   $app->get('/coffrets/{id}', GetCoffretAction::class);
 
-  // Route 4 : GET /categories/{cat_id}/prestations/{id_prestation}
+  $app->get('/creer-box', GetCreateNewBoxAction::class);
+
+  $app->get('/creer-custom-box', GetCreateCustomBoxAction::class);
+
+  $app->get('/mes-box', GetBoxByUserID::class);
+
+  $app->get('/box/{id}', GetBoxDetails::class);
+
+  $app->post('/sauver-box', PostSaveCustomBoxAction::class);
+
+    // Route 4 : GET /categories/{cat_id}/prestations/{id_prestation}
     $app->get('/categories/{cat_id}/prestations/{presta_id}', function ($request, $response, $args) {
         $cat_id = $args['cat_id'];
         $presta_id = $args['presta_id'];

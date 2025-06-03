@@ -1,0 +1,130 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --accent-color: #1abc9c;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --card-border: #e0e0e0;
+            --hover-bg: #f2f9ff;
+            --font-stack: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .mes-box-section {
+            max-width: 1200px;
+            margin: 3rem auto 4rem;
+            padding: 0 1rem;
+            font-family: var(--font-stack);
+            color: var(--text-color);
+        }
+
+        .mes-box-section h1 {
+            font-size: 2.4rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 2.5rem;
+            color: var(--primary-color);
+        }
+
+        .no-box {
+            text-align: center;
+            font-style: italic;
+            color: #888;
+            font-size: 1.1rem;
+        }
+
+        .box-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .box-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 1.5rem;
+            width: 300px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+            transition: background 0.3s ease, transform 0.3s ease;
+            animation: fadeInUp 0.5s ease both;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .box-card:hover {
+            background: var(--hover-bg);
+            transform: translateY(-5px);
+        }
+
+        .box-card h3 {
+            margin-bottom: 0.6rem;
+            font-size: 1.4rem;
+            color: var(--primary-color);
+        }
+
+        .box-card p {
+            margin: 0.4rem 0;
+            font-size: 1.05rem;
+        }
+
+        .box-card .created-at {
+            font-size: 0.85rem;
+            color: #999;
+            margin-top: 0.8rem;
+        }
+
+        .box-card a {
+            display: inline-block;
+            margin-top: 1rem;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        .box-card a:hover {
+            background: #217dbb;
+        }
+
+        @media (max-width: 500px) {
+            .box-card {
+                width: 100%;
+            }
+        }
+    </style>
+
+    <div class="mes-box-section" role="main" aria-labelledby="mes-box-title">
+        <h1 id="mes-box-title">Mes Box</h1>
+
+        {% if boxes is empty %}
+            <p class="no-box">Vous n'avez encore créé aucune box.</p>
+        {% else %}
+            <div class="box-grid">
+                {% for box in boxes %}
+                    <div class="box-card">
+                        <h3>{{ box.libelle }}</h3>
+                        <p><strong>Description :</strong> {{ box.description ?: '—' }}</p>
+
+                        {% if box.kdo %}
+                            <p><strong>🎁 Message cadeau :</strong> {{ box.message_kdo }}</p>
+                        {% endif %}
+
+                        <p class="created-at">Créée le {{ box.created_at|date("d/m/Y H:i") }}</p>
+
+                        <a href="/box/{{ box.id }}">Voir détails</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
