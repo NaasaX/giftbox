@@ -40,4 +40,5 @@ src/conf/*.ini
 public/.htaccess
 .idea/
 
-/vendor
+vendor/
+vendor
