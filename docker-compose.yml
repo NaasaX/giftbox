@@ -14,6 +14,23 @@ services:
       MYSQL_DATABASE: giftbox
     volumes:
       - mysql_data:/var/lib/mysql
+    networks:
+      - gift.net
+
+  db-init:
+    image: mysql:8.0
+    depends_on:
+      - mysql-db
+    entrypoint: |
+      sh -c "
+        sleep 20 && \
+        mysql -h mysql -u root -proot giftbox < /sql/gift.schema.sql && \
+        mysql -h mysql -u root -proot giftbox < /sql/gift.data.sql
+      "
+    volumes:
+      - ./src/db:/sql
+    networks:
+      - gift.net
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -27,6 +44,8 @@ services:
       PMA_PASSWORD: root
     depends_on:
       - mysql-db
+    networks:
+      - gift.net
 
   app:
     build:
