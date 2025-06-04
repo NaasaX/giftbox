@@ -24,8 +24,6 @@ class SessionAuthProvider implements AuthProviderInterface
     {
         $this->userRepository = $userRepository;
 
-        // Démarrer la session si elle n'est pas déjà démarrée
-        $this->ensureSessionStarted();
     }
 
     public function setActiveUserId(string $userId): void
@@ -137,16 +135,6 @@ class SessionAuthProvider implements AuthProviderInterface
     {
         $user = $this->getSignedInUser();
         return $user && $user->role === AuthnService::ROLE_USER;
-    }
-
-    /**
-     * S'assure que la session PHP est démarrée
-     */
-    private function ensureSessionStarted(): void
-    {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
     }
 
     /**

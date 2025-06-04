@@ -9,9 +9,6 @@ class PostAjoutPanierAction
 {
     public function __invoke(Request $request, Response $response, array $args): Response
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
 
         $data = $request->getParsedBody();
         $prestationId = $data['prestation_id'] ?? null;
