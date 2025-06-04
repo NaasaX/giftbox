@@ -150,6 +150,8 @@
                 <input type="text" name="message" id="message" placeholder="Votre message personnalisé">
             </div>
 
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
             <button type="submit">Créer la box</button>
         </form>
     </div>
@@ -166,5 +168,4 @@
             }
         }
     </script>
-    "
 {% endblock %}

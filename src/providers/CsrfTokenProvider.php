@@ -1,5 +1,5 @@
 <?php
-namespace gift\appli\application\providers;
+namespace Giftbox\providers;
 
 class CsrfTokenProvider {
 
