@@ -13,6 +13,9 @@ use Giftbox\webui\actions\Get\GetPrestationAction;
 use Giftbox\webui\actions\Get\GetBoxDetails;
 use Giftbox\webui\actions\Post\PostSaveCustomBoxAction;
 use Slim\App;
+use Giftbox\webui\actions\Get\GetCatalogueAction;
+use Giftbox\webui\actions\Post\PostAjoutPanierAction;
+
 
 
 return function(App $app): App {
@@ -50,6 +53,10 @@ return function(App $app): App {
         $presta_id = $args['presta_id'];
     });
 
+  // Route 5 : GET /catalogue
+  $app->get('/catalogue', GetCatalogueAction::class)->setName('catalogue');
 
-    return $app;
+  $app->post('/panier/ajouter', PostAjoutPanierAction::class);
+
+  return $app;
 };
