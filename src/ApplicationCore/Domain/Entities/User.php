@@ -12,6 +12,23 @@ class User extends Model {
     protected $keyType = 'string';
     public $timestamps = false;
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->{$model->getKeyName()})) {
+                // Generate a unique ID
+                $uniqueId = uniqid('', true);
+                // Base64 encode it
+                $base64Id = base64_encode($uniqueId);
+                // Make it URL-safe (remove +, /, =)
+                $safeBase64Id = str_replace(['+', '/'], ['-', '_'], rtrim($base64Id, '='));
+                $model->{$model->getKeyName()} = $safeBase64Id;
+            }
+        });
+    }
+
     protected $fillable = [
         'id',
         'user_id',

@@ -11,13 +11,14 @@ use Giftbox\WebUI\Actions\GetCategorieAction;
 use Giftbox\WebUI\Actions\GetPrestationAction;
 use Giftbox\WebUI\Actions\GetCoffretsAction;
 use Giftbox\WebUI\Actions\GetCoffretAction;
-
-
+use Giftbox\WebUI\Actions\SigninAction;
+use Giftbox\WebUI\Actions\SignoutAction;
+use Giftbox\WebUI\Actions\SignupAction;
 
 return function(App $app): App {
 
   // Route 0 : GET /
-  $app->get('/', GetHomePageAction::class);
+  $app->get('/', GetHomePageAction::class)->setName('home');
 
   // Route 1 : GET /categories
   $app->get('/categories', GetCategoriesAction::class);
@@ -39,6 +40,17 @@ return function(App $app): App {
         $presta_id = $args['presta_id'];
     });
 
+  // Route 5 : Signin
+
+  $app->get('/signin', SigninAction::class)->setName('signin');
+  $app->post('/signin', SigninAction::class)->setName('signin_post');
+
+  // Route for Signout
+  $app->get('/signout', SignoutAction::class)->setName('signout');
+
+  // Route for Signup
+  $app->get('/signup', SignupAction::class)->setName('signup');
+  $app->post('/signup', SignupAction::class)->setName('signup_post');
 
     return $app;
 };
