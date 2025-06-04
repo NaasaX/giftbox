@@ -41,8 +41,7 @@ class UserRepository implements UserRepositoryInterface
     {
         $user = new User();
         
-        // Générer un ID base64 unique
-        $user->id = $this->generateBase64Id();
+        $user->id = $this->generateUuid();
         $user->user_id = $userData['user_id'] ?? $userData['email'];
         $user->password = $userData['password'];
         $user->role = $userData['role'] ?? 1;
@@ -68,10 +67,11 @@ class UserRepository implements UserRepositoryInterface
         // Si l'utilisateur n'a pas d'ID, en générer un
         if (empty($user->id)) {
             $user->id = $this->generateUuid();
-        }
+        
         
         return $user->save();
     }
+}
 
     /**
      * Supprime un utilisateur.
@@ -89,9 +89,7 @@ class UserRepository implements UserRepositoryInterface
         return User::where('user_id', $email)->exists();
     }
 
-    /**
-     * Génère un ID unique en base64
-     */
+    
     private function generateUuid(): string
 {
     return Uuid::uuid4()->toString();

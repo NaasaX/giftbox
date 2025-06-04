@@ -9,7 +9,6 @@ class AuthnService implements AuthnServiceInterface
     private UserRepositoryInterface $userRepository;
     private \Giftbox\providers\AuthProviderInterface $authProvider;
 
-    // Rôles définis selon les spécifications
     public const ROLE_USER = 1;
     public const ROLE_ADMIN = 100;
 
@@ -19,7 +18,7 @@ class AuthnService implements AuthnServiceInterface
         $this->authProvider = $authProvider;
     }
 
-    public function register(string $email, string $password): User // Signature matches interface
+    public function register(string $email, string $password): User 
     {
         // Validation des données d'entrée
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -27,52 +26,39 @@ class AuthnService implements AuthnServiceInterface
         }
         $this->validatePassword($password);
 
-        // Vérifier si l'utilisateur existe déjà using the email as user_id for lookup
-        $existingUser = $this->userRepository->findByEmail($email); // findByEmail now queries user_id column
+        $existingUser = $this->userRepository->findByEmail($email); 
         if ($existingUser !== null) {
             throw new \RuntimeException("A user with this email already exists.");
         }
 
-        // Hacher le mot de passe
         $hashedPassword = $this->hashPassword($password);
 
-        // Créer l'utilisateur avec le rôle par défaut (utilisateur enregistré)
         $user = new User();
-        $user->user_id = $email; // Set user_id with the email value
+        $user->user_id = $email; 
         $user->password = $hashedPassword;
-        // nom and prenom are not set as per user feedback
         $user->role = self::ROLE_USER;
 
-        // Sauvegarder l'utilisateur
         $this->userRepository->save($user);
         return $user;
     }
-    
-    // This registerUser method seems redundant now or was for a different purpose.
-    // If it's not used, it could be removed to avoid confusion.
-    // For now, I'll leave it but ensure the primary 'register' method is correct.
+   
     public function registerUser(string $userId, string $password): User
     {
-        // Validation des données d'entrée
-        // TODO: Add validation for userId if necessary, e.g., length, format
+        
         $this->validatePassword($password);
 
-        // Vérifier si l'utilisateur existe déjà
         $existingUser = $this->userRepository->findByUserId($userId);
         if ($existingUser !== null) {
             throw new \RuntimeException("Un utilisateur avec cet ID utilisateur existe déjà");
         }
 
-        // Hacher le mot de passe
         $hashedPassword = $this->hashPassword($password);
 
-        // Créer l'utilisateur avec le rôle par défaut (utilisateur enregistré)
         $user = new User();
         $user->id = base64_encode(random_bytes(16));
         $user->user_id = $userId;
-        $user->password = $hashedPassword; // Eloquent handles setPassword if it's a mutator
-        $user->role = self::ROLE_USER; // Eloquent handles setRole if it's a mutator
-        // $user->setCreatedAt(new \DateTime()); // Eloquent handles timestamps if enabled
+        $user->password = $hashedPassword; 
+        $user->role = self::ROLE_USER; 
 
         // Sauvegarder l'utilisateur
         $this->userRepository->save($user);
@@ -107,12 +93,12 @@ class AuthnService implements AuthnServiceInterface
 
     public function signOut(): void
     {
-        $this->authProvider->clearActiveUser(); // Changed to use the new method name
+        $this->authProvider->clearActiveUser(); 
     }
 
     public function isSignedIn(): bool
     {
-        return $this->authProvider->isAuthenticated(); // Changed to use the new method name
+        return $this->authProvider->isAuthenticated(); 
     }
 
     public function getCurrentUserId(): ?string

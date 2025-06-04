@@ -6,20 +6,17 @@ namespace Giftbox\providers;
 use Giftbox\ApplicationCore\Application\UseCases\AuthnServiceInterface;
 use Giftbox\ApplicationCore\Domain\Repository\UserRepositoryInterface;
 use Giftbox\ApplicationCore\Domain\Entities\User;
-use InvalidArgumentException; // Already used, but good practice to import
+use InvalidArgumentException; 
 
 class SessionAuthProvider implements \Giftbox\providers\AuthProviderInterface
 {
     private AuthnServiceInterface $authnService;
     private UserRepositoryInterface $userRepository;
     
-    // Clé pour stocker l'ID utilisateur en session
     private const SESSION_USER_ID_KEY = 'auth_user_id';
     
-    // Clé pour stocker le timestamp de dernière activité
     private const SESSION_LAST_ACTIVITY_KEY = 'auth_last_activity';
     
-    // Durée d'inactivité maximale (en secondes) - 30 minutes par défaut
     private const SESSION_TIMEOUT = 1800;
 
     public function __construct(
@@ -29,7 +26,6 @@ class SessionAuthProvider implements \Giftbox\providers\AuthProviderInterface
         $this->authnService = $authnService;
         $this->userRepository = $userRepository;
         
-        // Démarrer la session si elle n'est pas déjà démarrée
         $this->ensureSessionStarted();
     }
 
@@ -173,7 +169,6 @@ class SessionAuthProvider implements \Giftbox\providers\AuthProviderInterface
         $_SESSION[self::SESSION_USER_ID_KEY] = $user->getId();
         $_SESSION[self::SESSION_LAST_ACTIVITY_KEY] = time();
         
-        // Optionnel : stocker des informations supplémentaires
         $_SESSION['auth_user_email'] = $user->getEmail();
         $_SESSION['auth_user_role'] = $user->getRole();
     }
@@ -189,8 +184,6 @@ class SessionAuthProvider implements \Giftbox\providers\AuthProviderInterface
         unset($_SESSION['auth_user_email']);
         unset($_SESSION['auth_user_role']);
         
-        // Optionnel : détruire complètement la session
-        // session_destroy();
     }
 
     /**
