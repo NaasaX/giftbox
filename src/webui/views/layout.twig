@@ -4,7 +4,63 @@
     <meta charset="UTF-8">
     <title>{% block title %}Giftbox{% endblock %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="{{ assets_css }}/style.css">
+</head>
+<body>
+    <div id="nav-bar">
+        <div id="nav-header">
+            <a id="nav-title" href="/">Giftbox <i class="fas fa-gift"></i></a>
+            <label for="nav-toggle"><span id="nav-toggle-burger"></span></label>
+            <hr/>
+        </div>
+        <div id="nav-content">
+            <a href="/" class="nav-button">
+                <i class="fas fa-home"></i>
+                <span>Accueil</span>
+            <a href="/catalogue" class="nav-button">
+                <i class="fas fa-list"></i>
+                <span>Catalogue</span>
+            </a>
+            </a>
+            <a href="/categories" class="nav-button">
+                <i class="fas fa-list"></i>
+                <span>Liste catégories</span>
+            </a>
+            <a href="/coffrets" class="nav-button">
+                <i class="fas fa-box"></i>
+                <span>Coffrets</span>
+            </a>
+            <a href="/creer-box" class="nav-button">
+                <i class="fas fa-plus-square"></i>
+                <span>Créer un coffret personnalisé</span>
+            </a>
+        </div>
+        <div id="nav-footer">
+            <div id="nav-footer-heading">
+                <div id="nav-footer-titlebox">
+                    <a id="nav-footer-title" href="#">Utilisateur</a>
+                    <span id="nav-footer-subtitle">Connecté</span>
+                </div>
+                <label for="nav-footer-toggle"><i class="fas fa-sign-out-alt"></i></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer>
+            {% block footer %}
+                <div class="footer-content">
+                    <p>&copy; 2025 Giftbox - IUT Nancy-Charlemagne</p>
+                    <p class="footer-subtitle">Plateforme de gestion de coffrets cadeaux</p>
+                </div>
+            {% endblock %}
+        </footer>
+    </div>
+</body>
+</html>
 <style>
 /* === BASE === */
 body {

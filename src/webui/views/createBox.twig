@@ -1,0 +1,17 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+
+<h1>Créer un coffret</h1>
+
+<div style="display: flex; gap: 2rem; justify-content: center; margin-top: 3rem;">
+    <form action="/creer-custom-box" method="get">
+        <button type="submit" style="font-size: 1.5rem; padding: 2rem 4rem;">Créer une box personnalisé</button>
+    </form>
+
+    <form action="/coffrets" method="get">
+        <button type="submit" style="font-size: 1.5rem; padding: 2rem 4rem;">Créer une box à partir d'un coffret-type</button>
+    </form>
+</div>
+
+{% endblock %}

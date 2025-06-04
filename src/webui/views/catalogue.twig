@@ -1,0 +1,21 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+    <h1>Catalogue des Prestations</h1>
+    {% for categorie in categories %}
+        <h2>{{ categorie.libelle }}</h2>
+        <ul>
+            {% for prestation in categorie.prestations %}
+                <li>
+                    <b>{{ prestation.libelle }}</b> — {{ prestation.description }}<br>
+                    <form action="/panier/ajouter" method="post" style="display:inline;">
+                        <input type="hidden" name="prestation_id" value="{{ prestation.id }}">
+                        <button type="submit">Ajouter au panier</button>
+                    </form>
+                </li>
+            {% else %}
+                <li>Aucune prestation dans cette catégorie.</li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+{% endblock %}

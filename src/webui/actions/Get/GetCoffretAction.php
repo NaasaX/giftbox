@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Giftbox\WebUI\Actions;
+namespace Giftbox\webui\actions\Get;
 
 use Giftbox\ApplicationCore\Domain\Entities\Coffret_type;
 use Psr\Http\Message\ResponseInterface as Response;

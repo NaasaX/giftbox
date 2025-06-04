@@ -13,6 +13,16 @@ class Prestation extends Model {
     public $timestamps = false;
 
 
+    public function boxes()
+    {
+        return $this->belongsToMany(
+            Box::class,
+            'box2presta',
+            'presta_id',
+            'box_id'
+        )->withPivot('quantite');
+    }
+
     public function categorie() {
         return $this->belongsTo(Categorie::class, 'cat_id', 'id');
     }

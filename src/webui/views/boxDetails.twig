@@ -1,0 +1,133 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+    <style>
+        :root {
+            --primary-color: #2980b9;
+            --secondary-color: #ecf0f1;
+            --text-color: #2c3e50;
+            --accent-color: #1abc9c;
+            --light-bg: #fdfdfd;
+            --font-stack: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .box-container {
+            max-width: 760px;
+            margin: 3rem auto 4rem;
+            background: var(--light-bg);
+            padding: 2.5rem 3rem;
+            border-radius: 18px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+            font-family: var(--font-stack);
+            color: var(--text-color);
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .box-container h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 2.2rem;
+            color: var(--primary-color);
+        }
+
+        .info p {
+            margin: 1rem 0;
+            font-size: 1.15rem;
+            line-height: 1.7;
+        }
+
+        .info strong {
+            color: var(--accent-color);
+        }
+
+        .prestations-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 0.4rem;
+        }
+
+        .prestations-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .prestations-list li {
+            background: #f4f9fd;
+            margin-bottom: 1rem;
+            padding: 1rem 1.2rem;
+            border-left: 6px solid var(--primary-color);
+            border-radius: 12px;
+            transition: background 0.3s ease;
+        }
+
+        .prestations-list li:hover {
+            background: #ebf7ff;
+        }
+
+        .prestations-list li strong {
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .no-presta {
+            font-style: italic;
+            color: #999;
+            margin-top: 1.2rem;
+            font-size: 1rem;
+        }
+
+        @media (max-width: 480px) {
+            .box-container {
+                padding: 2rem 1.5rem;
+                margin: 2rem 1rem;
+            }
+
+            .box-container h1 {
+                font-size: 2rem;
+            }
+
+            .prestations-title {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+
+    <div class="box-container" role="main" aria-labelledby="box-title">
+        <h1 id="box-title">Détails de la Box</h1>
+
+        <div class="info">
+            <p><strong>Libellé :</strong> {{ box.libelle }}</p>
+            <p><strong>Description :</strong> {{ box.description ?: 'Aucune description disponible.' }}</p>
+            <p><strong>Créée par :</strong> {{ box.createur ? box.createur.name : 'Inconnu' }}</p>
+            <p><strong>Montant :</strong> {{ box.montant|number_format(2, ',', ' ') }} €</p>
+        </div>
+
+        <div class="prestations">
+            <h2 class="prestations-title">Prestations associées</h2>
+
+            {% if prestations is empty %}
+                <p class="no-presta">Aucune prestation associée à cette box.</p>
+            {% else %}
+                <ul class="prestations-list">
+                    {% for presta in prestations %}
+                        <li>
+                            <strong>{{ presta.libelle }}</strong>
+                            Tarif : {{ presta.tarif|number_format(2, ',', ' ') }} €<br>
+                            Quantité : {{ presta.pivot.quantite }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
