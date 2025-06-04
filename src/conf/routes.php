@@ -44,7 +44,7 @@ return function(App $app): App {
 
   $app->get('/mes-box', GetBoxByUserID::class);
 
-  $app->get('/box/{id}', GetBoxDetails::class);
+  $app->get('/box/{id}', GetBoxDetails::class)->setName('box');
 
   $app->post('/sauver-box', PostSaveCustomBoxAction::class);
 
@@ -57,8 +57,9 @@ return function(App $app): App {
   // Route 5 : GET /catalogue
   $app->get('/catalogue', GetCatalogueAction::class)->setName('catalogue');
 
-  $app->post('/panier/ajouter', PostAjoutPanierAction::class);
-  // Route 5 : Signin
+  $app->post('/panier/ajouter', PostAjoutPanierAction::class)->setName('ajout_panier');
+
+    // Route 5 : Signin
 
   $app->get('/signin', SigninAction::class)->setName('signin');
   $app->post('/signin', SigninAction::class)->setName('signin_post');
