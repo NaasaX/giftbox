@@ -6,10 +6,10 @@ namespace giftbox\webui\actions;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\Twig;
-use giftbox\ApplicationCore\Application\UseCases\AuthnServiceInterface;
-use giftbox\ApplicationCore\Application\UseCases\AuthnService;
-use giftbox\ApplicationCore\Domain\Repository\UserRepository;
-use giftbox\providers\SessionAuthProvider;
+use Giftbox\ApplicationCore\Application\UseCases\AuthnServiceInterface;
+use Giftbox\ApplicationCore\Application\UseCases\AuthnService;
+use Giftbox\ApplicationCore\Domain\Repository\UserRepository;
+use Giftbox\Webui\Providers\SessionAuthProvider;
 use Slim\Routing\RouteContext;
 
 class SigninAction
@@ -46,10 +46,8 @@ class SigninAction
             $user = $this->authnService->verifyCredentials($email, $password);
             
             if ($user) {
-                error_log('Debug: Credentials verified, user found.');
-$url = $routeParser->fullUrlFor($request->getUri(), 'home');        
-        error_log('Debug: Redirect URL generated: ' . $url);
-                error_log($url);
+                $url = $routeParser->fullUrlFor($request->getUri(), 'home');        
+                
                 return $response->withHeader('Location', $url)->withStatus(302);
                                 error_log('crash');
 

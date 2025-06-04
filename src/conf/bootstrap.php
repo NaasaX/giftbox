@@ -2,13 +2,13 @@
 declare(strict_types=1);
 
 use Slim\Factory\AppFactory;
-use Giftbox\Utils\Eloquent;
+use Giftbox\Infrastructure\Eloquent;
 use Slim\Middleware\ErrorMiddleware;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
 use Giftbox\ApplicationCore\Domain\Repository\UserRepository;
 use Giftbox\ApplicationCore\Application\UseCases\AuthnService;
-use Giftbox\providers\SessionAuthProvider;
+use Giftbox\Webui\Providers\SessionAuthProvider;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 

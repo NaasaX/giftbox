@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Giftbox\providers;
+namespace Giftbox\Webui\Providers;
 
 use Giftbox\ApplicationCore\Domain\Entities\User;
 

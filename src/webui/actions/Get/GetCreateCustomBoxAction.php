@@ -2,7 +2,7 @@
 
 namespace Giftbox\webui\actions\Get;
 
-use Giftbox\providers\CsrfTokenProvider;
+use Giftbox\Webui\Providers\CsrfTokenProvider;
 use Giftbox\ApplicationCore\Domain\Entities\Prestation;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;

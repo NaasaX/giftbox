@@ -7,12 +7,12 @@ use Giftbox\ApplicationCore\Domain\Repository\UserRepositoryInterface;
 class AuthnService implements AuthnServiceInterface
 {
     private UserRepositoryInterface $userRepository;
-    private \Giftbox\providers\AuthProviderInterface $authProvider;
+    private \Giftbox\Webui\Providers\AuthProviderInterface $authProvider;
 
     public const ROLE_USER = 1;
     public const ROLE_ADMIN = 100;
 
-    public function __construct(UserRepositoryInterface $userRepository, \Giftbox\providers\AuthProviderInterface $authProvider)
+    public function __construct(UserRepositoryInterface $userRepository, \Giftbox\Webui\Providers\AuthProviderInterface $authProvider)
     {
         $this->userRepository = $userRepository;
         $this->authProvider = $authProvider;

@@ -5,10 +5,10 @@ namespace giftbox\webui\actions;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use giftbox\ApplicationCore\Application\UseCases\AuthnServiceInterface;
-use giftbox\ApplicationCore\Application\UseCases\AuthnService;
-use giftbox\ApplicationCore\Domain\Repository\UserRepository;
-use giftbox\providers\SessionAuthProvider;
+use Giftbox\ApplicationCore\Application\UseCases\AuthnServiceInterface;
+use Giftbox\ApplicationCore\Application\UseCases\AuthnService;
+use Giftbox\ApplicationCore\Domain\Repository\UserRepository;
+use Giftbox\Webui\Providers\SessionAuthProvider;
 use Slim\Routing\RouteContext;
 
 class SignoutAction

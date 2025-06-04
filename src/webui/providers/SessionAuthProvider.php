@@ -1,33 +1,49 @@
 <?php
 declare(strict_types=1);
 
-namespace Giftbox\providers;
+namespace Giftbox\Webui\Providers;
 
-use Giftbox\ApplicationCore\Application\UseCases\AuthnServiceInterface;
 use Giftbox\ApplicationCore\Domain\Repository\UserRepositoryInterface;
 use Giftbox\ApplicationCore\Domain\Entities\User;
-use InvalidArgumentException; 
 
-class SessionAuthProvider implements \Giftbox\providers\AuthProviderInterface
+class SessionAuthProvider implements AuthProviderInterface
 {
-    private AuthnServiceInterface $authnService;
     private UserRepositoryInterface $userRepository;
-    
+
     private const SESSION_USER_ID_KEY = 'auth_user_id';
-    
+
     private const SESSION_LAST_ACTIVITY_KEY = 'auth_last_activity';
-    
+
     private const SESSION_TIMEOUT = 1800;
 
-    public function __construct(
-        AuthnServiceInterface $authnService,
-        UserRepositoryInterface $userRepository
-    ) {
-        $this->authnService = $authnService;
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
         $this->userRepository = $userRepository;
-        
-        $this->ensureSessionStarted();
+
     }
+
+    public function setActiveUserId(string $userId): void
+    {
+        session_regenerate_id(true);
+
+        $_SESSION[self::SESSION_USER_ID_KEY] = $userId; 
+        $_SESSION[self::SESSION_LAST_ACTIVITY_KEY] = time();
+
+    }
+
+    public function clearActiveUser(): void
+    {
+        $this->clearSession();
+    }
+    
+    public function getCurrentUserId(): ?string
+    {
+        if (!$this->isSessionValid()) {
+            return null;
+        }
+        return $_SESSION[self::SESSION_USER_ID_KEY] ?? null;
+    }
+
 
     /**
      * {@inheritDoc}
@@ -48,7 +64,7 @@ class SessionAuthProvider implements \Giftbox\providers\AuthProviderInterface
 
         try {
             // Charger l'utilisateur depuis le repository
-            $user = $this->userRepository->findById((int)$userId);
+            $user = $this->userRepository->findById($userId);
             
             if ($user !== null) {
                 // Mettre à jour le timestamp de dernière activité
@@ -64,43 +80,6 @@ class SessionAuthProvider implements \Giftbox\providers\AuthProviderInterface
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function signin(string $email, string $password): bool
-    {
-        // Validation des paramètres
-        if (empty($email) || empty($password)) {
-            throw new InvalidArgumentException("L'email et le mot de passe sont requis");
-        }
-
-        try {
-            // Utiliser le service d'authentification pour vérifier les credentials
-            $user = $this->authnService->verifyCredentials($email, $password);
-            
-            if ($user === null) {
-                return false;
-            }
-
-            // Authentification réussie, créer la session
-            $this->createUserSession($user);
-            
-            return true;
-            
-        } catch (\Exception $e) {
-            // Log l'erreur si nécessaire (à implémenter selon votre système de log)
-            error_log("Erreur lors de l'authentification: " . $e->getMessage());
-            return false;
-        }
-    }
-
-    /**
-     * Déconnecte l'utilisateur en nettoyant la session
-     */
-    public function signout(): void
-    {
-        $this->clearSession();
-    }
 
     /**
      * Vérifie si un utilisateur est actuellement authentifié
@@ -120,7 +99,7 @@ class SessionAuthProvider implements \Giftbox\providers\AuthProviderInterface
     public function getUserRole(): ?int
     {
         $user = $this->getSignedInUser();
-        return $user ? $user->getRole() : null;
+        return $user ? $user->role : null; // Changed to direct property access
     }
 
     /**
@@ -131,7 +110,7 @@ class SessionAuthProvider implements \Giftbox\providers\AuthProviderInterface
     public function isAdmin(): bool
     {
         $user = $this->getSignedInUser();
-        return $user && $user->isAdmin();
+        return $user && $user->role === AuthnService::ROLE_ADMIN;
     }
 
     /**
@@ -142,17 +121,7 @@ class SessionAuthProvider implements \Giftbox\providers\AuthProviderInterface
     public function isUser(): bool
     {
         $user = $this->getSignedInUser();
-        return $user && $user->isUser();
-    }
-
-    /**
-     * S'assure que la session PHP est démarrée
-     */
-    private function ensureSessionStarted(): void
-    {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
+        return $user && $user->role === AuthnService::ROLE_USER;
     }
 
     /**
@@ -162,15 +131,13 @@ class SessionAuthProvider implements \Giftbox\providers\AuthProviderInterface
      */
     private function createUserSession(User $user): void
     {
-        // Régénérer l'ID de session pour la sécurité
         session_regenerate_id(true);
         
-        // Stocker les informations utilisateur en session
-        $_SESSION[self::SESSION_USER_ID_KEY] = $user->getId();
+        $_SESSION[self::SESSION_USER_ID_KEY] = $user->id; 
         $_SESSION[self::SESSION_LAST_ACTIVITY_KEY] = time();
         
-        $_SESSION['auth_user_email'] = $user->getEmail();
-        $_SESSION['auth_user_role'] = $user->getRole();
+    
+        $_SESSION['auth_user_role'] = $user->role; 
     }
 
     /**
@@ -178,11 +145,10 @@ class SessionAuthProvider implements \Giftbox\providers\AuthProviderInterface
      */
     private function clearSession(): void
     {
-        // Supprimer les clés d'authentification
         unset($_SESSION[self::SESSION_USER_ID_KEY]);
         unset($_SESSION[self::SESSION_LAST_ACTIVITY_KEY]);
-        unset($_SESSION['auth_user_email']);
         unset($_SESSION['auth_user_role']);
+        
         
     }
 

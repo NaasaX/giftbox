@@ -1,5 +1,5 @@
 <?php
-namespace Giftbox\providers;
+namespace Giftbox\Webui\Providers;
 
 class CsrfTokenProvider {
 
