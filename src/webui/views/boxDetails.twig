@@ -24,8 +24,14 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .box-container h1 {
@@ -115,11 +121,11 @@
         <div class="prestations">
             <h2 class="prestations-title">Prestations associées</h2>
 
-            {% if prestations is empty %}
+            {% if box.prestations is empty %}
                 <p class="no-presta">Aucune prestation associée à cette box.</p>
             {% else %}
                 <ul class="prestations-list">
-                    {% for presta in prestations %}
+                    {% for presta in box.prestations %}
                         <li>
                             <strong>{{ presta.libelle }}</strong>
                             Tarif : {{ presta.tarif|number_format(2, ',', ' ') }} €<br>
@@ -130,4 +136,8 @@
             {% endif %}
         </div>
     </div>
+
+    {% include 'catalogueByBox.twig' with {'box': box} %}
+
+
 {% endblock %}

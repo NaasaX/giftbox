@@ -16,10 +16,10 @@
             <a href="/" class="nav-button">
                 <i class="fas fa-home"></i>
                 <span>Marcelin</span>
+            </a>
             <a href="/catalogue" class="nav-button">
                 <i class="fas fa-list"></i>
                 <span>Catalogue</span>
-            </a>
             </a>
             <a href="/categories" class="nav-button">
                 <i class="fas fa-list"></i>
@@ -32,6 +32,10 @@
             <a href="/creer-box" class="nav-button">
                 <i class="fas fa-plus-square"></i>
                 <span>Créer un coffret personnalisé</span>
+            </a>
+            <a href="/mes-box" class="nav-button">
+                <i class="fa-box-open"></i>
+                <span>Mes coffrets</span>
             </a>
         </div>
         <div id="nav-footer">
@@ -134,12 +138,6 @@ body {
     outline: none;
 }
 
-#nav-content-highlight {
-    height: 1px;
-    background: #34495e;
-    margin: 16px 0;
-}
-
 /* Footer */
 #nav-footer {
     background: #22313f;
@@ -171,12 +169,6 @@ body {
 #nav-footer-subtitle {
     display: block;
     font-size: 0.9em;
-    color: #bfc9d1;
-}
-
-#nav-footer-content {
-    margin-top: 10px;
-    font-size: 0.95em;
     color: #bfc9d1;
 }
 
@@ -245,16 +237,12 @@ footer {
     #nav-footer,
     .nav-button span,
     #nav-footer-titlebox,
-    #nav-footer-content {
-        display: none;
-    }
 
     .nav-button i {
         margin: 0 auto;
     }
 }
 </style>
-</head>
 <body>
     <div id="nav-bar">
         <div id="nav-header">
@@ -305,4 +293,3 @@ footer {
         </main>
     </div>
 </body>
-</html>

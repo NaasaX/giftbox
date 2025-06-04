@@ -1,0 +1,30 @@
+{% block content %}
+
+    <div class="catalogue-container" role="main" aria-labelledby="catalogue-title">
+
+        {% for categorie in categories %}
+            <div class="categorie-section">
+                <h2>{{ categorie.libelle }}</h2>
+
+                {% if categorie.prestations is empty %}
+                    <p class="no-prestation">Aucune prestation dans cette catégorie.</p>
+                {% else %}
+                    <ul class="prestation-list">
+                        {% for prestation in categorie.prestations %}
+                            <li class="prestation-item">
+                                <b>{{ prestation.libelle }}</b>
+                                <p>{{ prestation.description }}</p>
+
+                                <form action="/panier/ajouter" method="post">
+                                    <input type="hidden" name="prestation_id" value="{{ prestation.id }}">
+                                    <button type="submit">Ajouter au panier</button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock content %}

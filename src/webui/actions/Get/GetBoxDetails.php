@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Giftbox\webui\actions\Get;
 
 use Giftbox\ApplicationCore\Domain\Entities\Box;
+use Giftbox\ApplicationCore\Domain\Entities\Categorie;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\Twig;
@@ -30,10 +31,14 @@ class GetBoxDetails {
             return $response->withStatus(404);
         }
 
+        $_SESSION['box_id'] = $box->id;
+
+        $categories = Categorie::with('prestations')->get();
+
         // Passer la box et ses prestations au template Twig
         return $view->render($response,'boxDetails.twig', [
             'box' => $box,
-            'prestations' => $box->prestations,
+            'categories' => $box->statut === 1 ? $categories : [],
         ]);
     }
 
