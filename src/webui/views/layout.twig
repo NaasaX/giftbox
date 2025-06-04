@@ -254,3 +254,65 @@ footer {
     }
 }
 </style>
+</head>
+<body>
+    <div id="nav-bar">
+        <div id="nav-header">
+            <a id="nav-title" href="/">Giftbox <i class="fas fa-gift"></i></a>
+            <label for="nav-toggle"><span id="nav-toggle-burger"></span></label>
+            <hr/>
+        </div>
+        <div id="nav-content">
+            <a href="/" class="nav-button">
+                <i class="fas fa-home"></i>
+                <span>Accueil</span>
+            </a>
+            <a href="/categories" class="nav-button">
+                <i class="fas fa-list"></i>
+                <span>Liste catégories</span>
+            </a>
+            <a href="/coffrets" class="nav-button">
+                <i class="fas fa-box"></i>
+                <span>Coffrets</span>
+            </a>
+            <a href="/signin" class="nav-button">
+                <i class="fas fa-sign-in-alt"></i>
+                <span>Connexion</span>
+            </a>
+        </div>
+        <div id="nav-footer">
+            <div id="nav-footer-heading">
+                {% if auth.isAuthenticated() %}
+                    {% set currentUser = auth.getSignedInUser() %}
+                    <div id="nav-footer-titlebox">
+                        <a id="nav-footer-title" href="#">{{ currentUser.user_id }}</a>
+                        <span id="nav-footer-subtitle">Connecté</span>
+                    </div>
+                    <a href="/signout" id="nav-footer-toggle"><i class="fas fa-sign-out-alt"></i></a>
+                {% else %}
+                    <div id="nav-footer-titlebox">
+                        <a id="nav-footer-title" href="/signin">Utilisateur</a>
+                        <span id="nav-footer-subtitle">Déconnecté</span>
+                    </div>
+                    <a href="/signin" id="nav-footer-toggle"><i class="fas fa-sign-in-alt"></i></a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer>
+            {% block footer %}
+                <div class="footer-content">
+                    <p>&copy; 2025 Giftbox - IUT Nancy-Charlemagne</p>
+                    <p class="footer-subtitle">Plateforme de gestion de coffrets cadeaux</p>
+                </div>
+            {% endblock %}
+        </footer>
+    </div>
+</body>
+</html>

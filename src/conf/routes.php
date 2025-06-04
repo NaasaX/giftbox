@@ -15,13 +15,14 @@ use Giftbox\webui\actions\Post\PostSaveCustomBoxAction;
 use Slim\App;
 use Giftbox\webui\actions\Get\GetCatalogueAction;
 use Giftbox\webui\actions\Post\PostAjoutPanierAction;
-
-
+use Giftbox\WebUI\Actions\SigninAction;
+use Giftbox\WebUI\Actions\SignoutAction;
+use Giftbox\WebUI\Actions\SignupAction;
 
 return function(App $app): App {
 
   // Route 0 : GET /
-  $app->get('/', GetHomePageAction::class);
+  $app->get('/', GetHomePageAction::class)->setName('home');
 
   // Route 1 : GET /categories
   $app->get('/categories', GetCategoriesAction::class);
@@ -57,6 +58,17 @@ return function(App $app): App {
   $app->get('/catalogue', GetCatalogueAction::class)->setName('catalogue');
 
   $app->post('/panier/ajouter', PostAjoutPanierAction::class);
+  // Route 5 : Signin
+
+  $app->get('/signin', SigninAction::class)->setName('signin');
+  $app->post('/signin', SigninAction::class)->setName('signin_post');
+
+  // Route for Signout
+  $app->get('/signout', SignoutAction::class)->setName('signout');
+
+  // Route for Signup
+  $app->get('/signup', SignupAction::class)->setName('signup');
+  $app->post('/signup', SignupAction::class)->setName('signup_post');
 
   return $app;
 };
