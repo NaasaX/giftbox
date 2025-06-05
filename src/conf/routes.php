@@ -21,7 +21,7 @@ use Giftbox\WebUI\Actions\SignoutAction;
 use Giftbox\WebUI\Actions\SignupAction;
 use Giftbox\webui\actions\Post\PostValidateBoxAction;
 
-return function(App $app): App {
+return function(App $app, $authProvider): App { // Accept $authProvider as an argument
 
   // Route 0 : GET /
   $app->get('/', GetHomePageAction::class)->setName('home');
@@ -40,13 +40,17 @@ return function(App $app): App {
 
   $app->get('/coffrets/{id}', GetCoffretAction::class);
 
-  $app->get('/creer-box', GetCreateNewBoxAction::class);
+  $app->get('/creer-box', function ($request, $response, $args) use ($authProvider) {
+      return (new GetCreateNewBoxAction($authProvider))($request, $response, $args);
+  });
 
   $app->get('/creer-custom-box', GetCreateCustomBoxAction::class);
 
   $app->get('/mes-box', GetBoxByUserID::class);
 
-  $app->get('/box/{id}', GetBoxDetails::class)->setName('box');
+  $app->get('/box/{id}', function ($request, $response, $args) use ($authProvider) {
+      return (new GetBoxDetails($authProvider))($request, $response, $args);
+  })->setName('box');
 
   $app->post('/sauver-box', PostSaveCustomBoxAction::class);
 
@@ -59,7 +63,9 @@ return function(App $app): App {
   // Route 5 : GET /catalogue
   $app->get('/catalogue', GetCatalogueAction::class)->setName('catalogue');
 
-  $app->post('/panier/ajouter', PostAjoutPanierAction::class)->setName('ajout_panier');
+  $app->post('/panier/ajouter', function ($request, $response, $args) use ($authProvider) {
+      return (new PostAjoutPanierAction($authProvider))($request, $response, $args);
+  })->setName('ajout_panier');
 
     // Route 5 : Signin
 
@@ -74,7 +80,9 @@ return function(App $app): App {
   $app->post('/signup', SignupAction::class)->setName('signup_post');
 
   // Route validation de la box
-  $app->post('/box/valider', PostValidateBoxAction::class);
+  $app->post('/box/valider', function ($request, $response, $args) use ($authProvider) {
+      return (new PostValidateBoxAction($authProvider))($request, $response, $args);
+  });
 
   // Route pour supprimer une prestation
   $app->post('/box/{id}/prestation/{prestation_id}/delete', PostSupprimerPrestationAction::class);

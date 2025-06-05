@@ -6,11 +6,20 @@ namespace Giftbox\webui\actions\Get;
 
 use Giftbox\ApplicationCore\Domain\Entities\Box;
 use Giftbox\ApplicationCore\Domain\Entities\Categorie;
+use Giftbox\Webui\Providers\SessionAuthProvider;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Exception\HttpForbiddenException;
 use Slim\Views\Twig;
 
 class GetBoxDetails {
+
+    private SessionAuthProvider $authProvider;
+
+    public function __construct(SessionAuthProvider $authProvider)
+    {
+        $this->authProvider = $authProvider;
+    }
 
     public function __invoke(Request $request, Response $response, array $args): Response
     {
@@ -29,6 +38,13 @@ class GetBoxDetails {
         if (!$box) {
             $response->getBody()->write("Box non trouvée");
             return $response->withStatus(404);
+        }
+
+        $userRole = $this->authProvider->getUserRole();
+        $userId = $this->authProvider->getCurrentUserId();
+
+        if ($userRole === null || $userRole < 1 || $box->createur_id !== $userId) {
+            throw new HttpForbiddenException($request, "Vous n'avez pas les droits nécessaires pour visualiser cette box.");
         }
 
         $_SESSION['current_box_id'] = $box->id;

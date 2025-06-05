@@ -4,6 +4,7 @@ declare(strict_types=1);
 use Slim\Factory\AppFactory;
 use Giftbox\Infrastructure\Eloquent;
 use Slim\Middleware\ErrorMiddleware;
+use Slim\Exception\HttpForbiddenException;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
 use Giftbox\ApplicationCore\Domain\Repository\UserRepository;
@@ -41,16 +42,34 @@ $app->add(TwigMiddleware::create($app, $twig));
 $app->addRoutingMiddleware();
 
 // Ajouter le middleware d’erreur
-$app->add(new ErrorMiddleware(
+$errorMiddleware = new ErrorMiddleware(
     $app->getCallableResolver(),
     $app->getResponseFactory(),
     true, // afficher erreurs
     true, // logger erreurs
     true  // logger détails
-));
+);
+
+// Custom error handler for HttpForbiddenException
+$errorMiddleware->setErrorHandler(HttpForbiddenException::class, function (
+    \Psr\Http\Message\ServerRequestInterface $request,
+    \Throwable $exception,
+    bool $displayErrorDetails,
+    bool $logErrors,
+    bool $logErrorDetails
+) use ($app) {
+    $response = $app->getResponseFactory()->createResponse();
+    $view = Twig::fromRequest($request);
+    return $view->render($response->withStatus(403), 'error.twig', [
+        'error_message' => $exception->getMessage()
+    ]);
+});
+
+$app->add($errorMiddleware);
 
 // Charger les routes
-$app = (require_once __DIR__ . '/routes.php')($app);
+$routes = require_once __DIR__ . '/routes.php';
+$app = $routes($app, $authProvider); // Pass $authProvider to the routes closure
 
 // Retourner l’application configurée
 return $app;
