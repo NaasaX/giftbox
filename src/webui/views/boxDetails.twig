@@ -135,6 +135,11 @@
                 </ul>
             {% endif %}
         </div>
+        {% if box.statut != 2 %}
+        <form method="post" action="/box/valider">
+            <button type="submit" class="btn btn-primary">Valider ce coffret</button>
+        </form>
+        {% endif %}
     </div>
 
     {% include 'catalogueByBox.twig' with {'box': box} %}

@@ -1,0 +1,20 @@
+<h1>Box : {{ box.libelle }}</h1>
+<p>Description : {{ box.description }}</p>
+
+{% if box.kdo %}
+    <p><strong>Cadeau avec message :</strong> {{ box.message_kdo }}</p>
+{% endif %}
+
+<h2>Prestations</h2>
+<ul>
+    {% for p in box.prestations %}
+        <li>{{ p.nom }} - {{ p.tarif }} €</li>
+    {% else %}
+        <li>Aucune prestation ajoutée.</li>
+    {% endfor %}
+</ul>
+
+<form method="post" action="/box/valider">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <button type="submit">Valider ce coffret</button>
+</form>

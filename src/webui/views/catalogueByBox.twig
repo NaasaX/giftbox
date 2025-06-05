@@ -17,6 +17,7 @@
 
                                 <form action="/panier/ajouter" method="post">
                                     <input type="hidden" name="prestation_id" value="{{ prestation.id }}">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                                     <button type="submit">Ajouter au panier</button>
                                 </form>
                             </li>

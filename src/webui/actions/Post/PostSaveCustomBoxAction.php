@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Giftbox\ApplicationCore\Domain\Entities\Box;
-use Giftbox\Webui\Providers\CsrfTokenProvider; // ✅ Ajout de l'import
+use Giftbox\Webui\providers\CsrfTokenProvider;
 use function Symfony\Component\Clock\now;
 
 class PostSaveCustomBoxAction {

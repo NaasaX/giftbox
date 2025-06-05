@@ -18,6 +18,8 @@ use Giftbox\webui\actions\Post\PostAjoutPanierAction;
 use Giftbox\WebUI\Actions\SigninAction;
 use Giftbox\WebUI\Actions\SignoutAction;
 use Giftbox\WebUI\Actions\SignupAction;
+use Giftbox\webui\actions\Get\GetCurrentBoxAction;
+use Giftbox\webui\actions\Post\PostValidateBoxAction;
 
 return function(App $app): App {
 
@@ -71,5 +73,9 @@ return function(App $app): App {
   $app->get('/signup', SignupAction::class)->setName('signup');
   $app->post('/signup', SignupAction::class)->setName('signup_post');
 
-  return $app;
+  // Route validation de la box
+  $app->post('/box/valider', PostValidateBoxAction::class);
+
+
+    return $app;
 };
