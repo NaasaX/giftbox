@@ -1,0 +1,15 @@
+{% extends "layout.twig" %}
+
+{% block title %}Erreur{% endblock %}
+
+{% block content %}
+    <div class="error-container" style="text-align: center; padding: 40px;">
+        <h1 style="color: #e74c3c; margin-bottom: 20px;">Oops! Une erreur est survenue.</h1>
+        <p style="font-size: 1.2em; color: #555; margin-bottom: 30px;">
+            {{ error_message }}
+        </p>
+        <a href="{{ url_for('home') }}" class="nav-button" style="display: inline-block; background-color: #3498db; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+            Retour à l'accueil
+        </a>
+    </div>
+{% endblock %}

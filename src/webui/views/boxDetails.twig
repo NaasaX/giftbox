@@ -92,6 +92,35 @@
             font-size: 1rem;
         }
 
+        .delete-presta-btn:hover {
+            background-color: #c0392b;
+            transform: scale(1.05);
+        }
+
+        .delete-presta-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .flash.success {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+        }
+
+
         @media (max-width: 480px) {
             .box-container {
                 padding: 2rem 1.5rem;
@@ -107,6 +136,12 @@
             }
         }
     </style>
+
+    {% if flash_message %}
+        <div class="flash success">
+            {{ flash_message }}
+        </div>
+    {% endif %}
 
     <div class="box-container" role="main" aria-labelledby="box-title">
         <h1 id="box-title">Détails de la Box</h1>
@@ -130,6 +165,14 @@
                             <strong>{{ presta.libelle }}</strong>
                             Tarif : {{ presta.tarif|number_format(2, ',', ' ') }} €<br>
                             Quantité : {{ presta.pivot.quantite }}
+
+                            {% if box.statut == 1 %}
+                                <form method="post" action="/box/{{ box.id }}/prestation/{{ presta.id }}/delete" style="margin-top: 0.5rem;">
+                                    <button type="submit" class="delete-presta-btn" title="Supprimer cette prestation">
+                                        Supprimer
+                                    </button>
+                                </form>
+                            {% endif %}
                         </li>
                     {% endfor %}
                 </ul>
@@ -141,6 +184,8 @@
         </form>
         {% endif %}
     </div>
+
+
 
     {% include 'catalogueByBox.twig' with {'box': box} %}
 

@@ -6,11 +6,20 @@ namespace Giftbox\webui\actions\Get;
 
 use Giftbox\ApplicationCore\Domain\Entities\Box;
 use Giftbox\ApplicationCore\Domain\Entities\Categorie;
+use Giftbox\Webui\Providers\SessionAuthProvider;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Exception\HttpForbiddenException;
 use Slim\Views\Twig;
 
 class GetBoxDetails {
+
+    private SessionAuthProvider $authProvider;
+
+    public function __construct(SessionAuthProvider $authProvider)
+    {
+        $this->authProvider = $authProvider;
+    }
 
     public function __invoke(Request $request, Response $response, array $args): Response
     {
@@ -31,14 +40,34 @@ class GetBoxDetails {
             return $response->withStatus(404);
         }
 
-        $_SESSION['box_id'] = $box->id;
+        $userRole = $this->authProvider->getUserRole();
+        $userId = $this->authProvider->getCurrentUserId();
+
+        if ($userRole === null || $userRole < 1 || $box->createur_id !== $userId) {
+            throw new HttpForbiddenException($request, "Vous n'avez pas les droits nécessaires pour visualiser cette box.");
+        }
+
+        $_SESSION['current_box_id'] = $box->id;
+
+        $montantTotal = 0.0;
+        foreach ($box->prestations as $presta) {
+            $montantTotal += $presta->tarif * $presta->pivot->quantite;
+        }
+        $box->montant = $montantTotal;
+
+        $_SESSION['current_box_id'] = $box->id;
 
         $categories = Categorie::with('prestations')->get();
+
+
+        $flashMessage = $_SESSION['flash_message'] ?? null;
+        unset($_SESSION['flash_message']);
 
         // Passer la box et ses prestations au template Twig
         return $view->render($response,'boxDetails.twig', [
             'box' => $box,
             'categories' => $box->statut === 1 ? $categories : [],
+            'flash_message' => $flashMessage
         ]);
     }
 

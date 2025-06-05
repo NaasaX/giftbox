@@ -121,10 +121,15 @@
 
                         <p class="created-at">Créée le {{ box.created_at|date("d/m/Y H:i") }}</p>
 
+                        {% if box.statut == 2 %}
+                            <p class="box-validée" style="color: green; font-weight: bold;">✅ Box validée</p>
+                        {% endif %}
+
                         <a href="/box/{{ box.id }}">Voir détails</a>
                     </div>
                 {% endfor %}
             </div>
         {% endif %}
     </div>
+
 {% endblock %}

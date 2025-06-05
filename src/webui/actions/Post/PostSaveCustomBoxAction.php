@@ -2,6 +2,8 @@
 
 namespace Giftbox\webui\actions\Post;
 
+use Giftbox\ApplicationCore\Domain\Repository\UserRepository;
+use Giftbox\Webui\Providers\SessionAuthProvider;
 use Illuminate\Support\Str;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -13,6 +15,11 @@ class PostSaveCustomBoxAction {
     public function __invoke(Request $request, Response $response, array $args): Response {
 
         $data = $request->getParsedBody();
+
+        $userRepository = new UserRepository();
+        $session = new SessionAuthProvider($userRepository);
+
+        $userId = $session->getCurrentUserId();
 
         try {
             $token = $data['csrf_token'] ?? '';
@@ -26,7 +33,6 @@ class PostSaveCustomBoxAction {
         $description = trim($data['description'] ?? '');
         $cadeau = isset($data['cadeau']) ? 1 : 0;
         $message = trim($data['message'] ?? '');
-        $createurId = '9c02505f-af68-4b51-a5b6-e52b1805eee1'; // ⚠️ temporaire
 
         if (empty($nom) || empty($description)) {
             $response->getBody()->write("Nom et description sont obligatoires.");
@@ -38,7 +44,7 @@ class PostSaveCustomBoxAction {
             'description' => $description,
             'kdo' => $cadeau,
             'message_kdo' => $cadeau ? $message : '',
-            'createur_id' => $createurId
+            'createur_id' => $userId
         ]);
 
         $box->token = base64_encode(random_bytes(32));
