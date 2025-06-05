@@ -14,7 +14,7 @@ class PostAjoutPanierAction
 
         $data = $request->getParsedBody();
         $prestationId = $data['prestation_id'] ?? null;
-        $boxId = $_SESSION['box_id'] ?? null;
+        $boxId = $_SESSION['current_box_id'] ?? null;
 
         // Vérification des données
         if (!$boxId || !$prestationId) {

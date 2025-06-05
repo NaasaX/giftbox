@@ -21,13 +21,24 @@ class PostValidateBoxAction {
             return $response->withStatus(404);
         }
 
-        // Simule validation : on pourrait par exemple ajouter une colonne "is_validated"
-        $box->validated = true; // colonne booléenne à prévoir dans la BDD
+        // Vérifier qu'il y a au moins 2 prestations associées
+        $prestationCount = $box->prestations()->count();
+        if ($prestationCount < 2) {
+            $_SESSION['flash_message'] = "Vous devez ajouter au moins deux prestations pour valider ce coffret.";
+            return $response
+                ->withHeader('Location', '/box/' . $boxId)
+                ->withStatus(302);
+        }
+
+        $box->statut = 2;
         $box->save();
 
         unset($_SESSION['current_box_id']);
+        $_SESSION['flash_message'] = "Coffret validé avec succès !";
 
-        $response->getBody()->write("Coffret validé avec succès !");
-        return $response;
+        return $response
+            ->withHeader('Location', '/box/' . $boxId)
+            ->withStatus(302);
+
     }
 }

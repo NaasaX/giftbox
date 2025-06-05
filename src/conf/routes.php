@@ -12,13 +12,13 @@ use Giftbox\webui\actions\Get\GetHomePageAction;
 use Giftbox\webui\actions\Get\GetPrestationAction;
 use Giftbox\webui\actions\Get\GetBoxDetails;
 use Giftbox\webui\actions\Post\PostSaveCustomBoxAction;
+use Giftbox\webui\actions\Post\PostSupprimerPrestationAction;
 use Slim\App;
 use Giftbox\webui\actions\Get\GetCatalogueAction;
 use Giftbox\webui\actions\Post\PostAjoutPanierAction;
 use Giftbox\WebUI\Actions\SigninAction;
 use Giftbox\WebUI\Actions\SignoutAction;
 use Giftbox\WebUI\Actions\SignupAction;
-use Giftbox\webui\actions\Get\GetCurrentBoxAction;
 use Giftbox\webui\actions\Post\PostValidateBoxAction;
 
 return function(App $app): App {
@@ -75,6 +75,10 @@ return function(App $app): App {
 
   // Route validation de la box
   $app->post('/box/valider', PostValidateBoxAction::class);
+
+  // Route pour supprimer une prestation
+  $app->post('/box/{id}/prestation/{prestation_id}/delete', PostSupprimerPrestationAction::class);
+
 
 
     return $app;

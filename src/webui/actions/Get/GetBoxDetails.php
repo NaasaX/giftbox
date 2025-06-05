@@ -31,14 +31,27 @@ class GetBoxDetails {
             return $response->withStatus(404);
         }
 
-        $_SESSION['box_id'] = $box->id;
+        $_SESSION['current_box_id'] = $box->id;
+
+        $montantTotal = 0.0;
+        foreach ($box->prestations as $presta) {
+            $montantTotal += $presta->tarif * $presta->pivot->quantite;
+        }
+        $box->montant = $montantTotal;
+
+        $_SESSION['current_box_id'] = $box->id;
 
         $categories = Categorie::with('prestations')->get();
+
+
+        $flashMessage = $_SESSION['flash_message'] ?? null;
+        unset($_SESSION['flash_message']);
 
         // Passer la box et ses prestations au template Twig
         return $view->render($response,'boxDetails.twig', [
             'box' => $box,
             'categories' => $box->statut === 1 ? $categories : [],
+            'flash_message' => $flashMessage
         ]);
     }
 
