@@ -10,8 +10,8 @@ services:
     ports:
       - "8001:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: giftbox
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
@@ -24,8 +24,8 @@ services:
     entrypoint: |
       sh -c "
         sleep 20 && \
-        mysql -h mysql -u root -proot giftbox < /sql/gift.schema.sql && \
-        mysql -h mysql -u root -proot giftbox < /sql/gift.data.sql
+        mysql -h mysql -u root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} < /sql/gift.schema.sql && \
+        mysql -h mysql -u root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} < /sql/gift.data.sql
       "
     volumes:
       - ./src/db:/sql
@@ -40,8 +40,8 @@ services:
       - "8003:80"
     environment:
       PMA_HOST: mysql
-      PMA_USER: root
-      PMA_PASSWORD: root
+      PMA_USER: ${PMA_USER}
+      PMA_PASSWORD: ${PMA_PASSWORD}
     depends_on:
       - mysql-db
     networks:
