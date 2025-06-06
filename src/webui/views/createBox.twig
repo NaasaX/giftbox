@@ -2,16 +2,87 @@
 
 {% block content %}
 
-<h1>Créer un coffret</h1>
+    <style>
+        .coffret-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 4rem;
+            padding: 0 2rem;
+        }
 
-<div style="display: flex; gap: 2rem; justify-content: center; margin-top: 3rem;">
-    <form action="/creer-custom-box" method="get">
-        <button type="submit" style="font-size: 1.5rem; padding: 2rem 4rem;">Créer une box personnalisé</button>
-    </form>
+        .coffret-container h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
 
-    <form action="/coffrets" method="get">
-        <button type="submit" style="font-size: 1.5rem; padding: 2rem 4rem;">Créer une box à partir d'un coffret-type</button>
-    </form>
-</div>
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .coffret-button {
+            font-size: 1.2rem;
+            padding: 1.5rem 3rem;
+            border: none;
+            border-radius: 8px;
+            background-color: #2980b9;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .coffret-button:hover {
+            background-color: #2980b9;
+            transform: scale(1.03);
+        }
+
+        .title-coffret {
+            font-size: 3rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            text-align: center;
+            background: linear-gradient(90deg, #ff00cc, #3333ff, #00ffcc);
+            background-size: 200% auto;
+            color: transparent;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientMove 4s ease infinite;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            margin-bottom: 2rem;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% center; }
+            50% { background-position: 100% center; }
+            100% { background-position: 0% center; }
+        }
+
+        .title-coffret:hover {
+            filter: brightness(1.2);
+            transform: scale(1.05);
+            transition: all 0.3s ease;
+        }
+    </style>
+
+    <div class="coffret-container">
+        <h1 class="title-coffret">Créer un coffret</h1>
+
+        <div class="button-group">
+            <form action="/creer-custom-box" method="get">
+                <button type="submit" class="coffret-button">Créer une box personnalisée</button>
+            </form>
+
+            <form action="/coffrets" method="get">
+                <button type="submit" class="coffret-button">Créer une box à partir d’un coffret-type</button>
+            </form>
+        </div>
+    </div>
 
 {% endblock %}

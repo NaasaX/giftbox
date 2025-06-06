@@ -1,13 +1,112 @@
 {% extends "layout.twig" %}
 
 {% block content %}
+    <style>
+        :root {
+            --primary-color: #2980b9;
+            --secondary-color: #ecf0f1;
+            --text-color: #2c3e50;
+            --accent-color: #1abc9c;
+            --light-bg: #fdfdfd;
+            --font-stack: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --hover-bg: #f4f9fd;
+        }
 
-<h2>Coffrets</h2>
-<ul>
-    {% for c in coffret %}
-        <li><a href="/coffrets/{{ c.id }}"> {{ c.libelle }} </a></li>
-    {% else %}
-        <li>Aucune prestation disponible.</li>
-    {% endfor %}
-</ul>
+
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .coffret-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-align: center;
+            background: linear-gradient(90deg, #ff00cc, #3333ff, #00ffcc);
+            background-size: 200% auto;
+            color: transparent;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientMove 4s ease infinite;
+            margin-bottom: 2.5rem;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% center; }
+            50% { background-position: 100% center; }
+            100% { background-position: 0% center; }
+        }
+
+        .coffret-title:hover {
+            filter: brightness(1.1);
+            transform: scale(1.03);
+            transition: all 0.3s ease;
+        }
+
+        .coffret-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        .coffret-item {
+            background: var(--hover-bg);
+            border-left: 5px solid var(--primary-color);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            min-width: 250px;
+            max-width: 300px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 16px rgba(41, 128, 185, 0.1);
+            text-align: center;
+        }
+
+        .coffret-item:hover {
+            background: #ebf7ff;
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(41, 128, 185, 0.15);
+        }
+
+        .coffret-item a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: block;
+        }
+
+        .empty-msg {
+            font-style: italic;
+            text-align: center;
+            color: #7f8c8d;
+            margin-top: 2rem;
+        }
+    </style>
+
+    <div class="coffret-container">
+        <h2 class="coffret-title">Nos Coffrets</h2>
+
+        {% if coffret is not empty %}
+            <ul class="coffret-list">
+                {% for c in coffret %}
+                    <li class="coffret-item">
+                        <a href="/coffrets/{{ c.id }}">{{ c.libelle }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="empty-msg">Aucun coffret disponible pour le moment.</p>
+        {% endif %}
+    </div>
 {% endblock %}

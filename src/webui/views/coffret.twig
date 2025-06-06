@@ -1,36 +1,113 @@
 {% extends "layout.twig" %}
 
 {% block content %}
+    <style>
+        :root {
+            --primary-color: #2980b9;
+            --text-color: #2c3e50;
+            --accent-color: #1abc9c;
+            --light-bg: #fdfdfd;
+            --font-stack: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-<h2>{{ coffret.libelle }}</h2>
+        .coffret-container {
+            max-width: 900px;
+            margin: 3rem auto;
+            padding: 2rem 3rem;
+            background-color: var(--light-bg);
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            font-family: var(--font-stack);
+            animation: fadeIn 0.5s ease-in-out;
+        }
 
-<p>{{ coffret.description }}</p>
-<ul>
-    {% for p in prestations %}
-        <li> {{ p.libelle }} - {{ p.description }} </li>
-    {% else %}
-        <li>Aucune prestation disponible.</li>
-    {% endfor %}
-</ul>
-<style>
-    h2 {
-        color: #4A90E2;
-        font-size: 2em;
-        margin-bottom: 0.5em;
-    }
-    p {
-        font-size: 1.1em;
-        color: #333;
-        margin-bottom: 1em;
-    }
-    ul {
-        list-style-type: disc;
-        padding-left: 2em;
-    }
-    li {
-        margin-bottom: 0.5em;
-        font-size: 1em;
-        color: #222;
-    }
-</style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .coffret-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .coffret-description {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            line-height: 1.6;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .prestation-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.2rem;
+        }
+
+        .prestation-item {
+            background: #f8fbfd;
+            padding: 1.5rem;
+            border-left: 6px solid var(--primary-color);
+            border-radius: 10px;
+            transition: 0.3s ease;
+        }
+
+        .prestation-item:hover {
+            background: #ecf6ff;
+            transform: scale(1.02);
+        }
+
+        .prestation-item b {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+
+        .prestation-item p {
+            margin: 0;
+            font-size: 1rem;
+            color: var(--text-color);
+        }
+
+        .no-prestation {
+            font-style: italic;
+            color: #888;
+            text-align: center;
+            background: #f0f0f0;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+    </style>
+
+    <div class="coffret-container" role="main" aria-labelledby="coffret-title">
+        <h2 class="coffret-title" id="coffret-title">{{ coffret.libelle }}</h2>
+        <p class="coffret-description">{{ coffret.description }}</p>
+
+        {% if prestations is not empty %}
+            <ul class="prestation-list">
+                {% for p in prestations %}
+                    <li class="prestation-item">
+                        <b>{{ p.libelle }}</b>
+                        <p>{{ p.description }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="no-prestation">Aucune prestation disponible dans ce coffret.</p>
+        {% endif %}
+    </div>
 {% endblock %}

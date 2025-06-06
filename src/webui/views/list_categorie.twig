@@ -1,184 +1,230 @@
 {% extends "layout.twig" %}
 
 {% block content %}
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Modern Flip Card</title>
-<style>
-    * {
-        margin: 0; padding: 0; box-sizing: border-box;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
 
-    body {
-        background: #f0f2f5;
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        padding: 2rem;
-    }
+    <h1 class="title-coffret">Liste des catégories</h1>
 
-    .cards-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2rem;
-        justify-content: center;
-        width: 100%;
-    }
+    <div class="cards-container">
+        {% set images = [
+            '/img/cate_restaurant.jpg',
+            '/img/cate_hebergement.jpg',
+            '/img/cate_attention.jpg',
+            '/img/cate_activite.jpg',
+            '/img/cate_petit_truc.jpg'
+        ] %}
 
-    .card {
-        width: 320px;
-        height: 400px;
-        perspective: 1500px;
-        cursor: pointer;
-        margin-top: 2.5rem;
-    }
-
-    .card-inner {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        border-radius: 15px;
-        box-shadow: 0 15px 25px rgba(0,0,0,0.15);
-        transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-        transform-style: preserve-3d;
-    }
-
-    .card.flipped .card-inner {
-        transform: rotateY(180deg);
-    }
-
-    .card-front, .card-back {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        border-radius: 15px;
-        backface-visibility: hidden;
-        overflow-y: auto;
-        padding: 2rem;
-        display: flex;
-        flex-direction: column;
-        color: #fff;
-    }
-
-    .card-front {
-        background: linear-gradient(135deg, #4f46e5, #7c3aed);
-        box-shadow: 0 10px 20px rgba(79, 70, 229, 0.5);
-    }
-
-    .card-front h2 {
-        font-size: 2rem;
-        margin-bottom: 0.8rem;
-    }
-
-    .card-front p {
-        font-size: 1.1rem;
-        line-height: 1.4;
-        opacity: 0.85;
-    }
-
-    .card-back {
-        background: #1e293b;
-        transform: rotateY(180deg);
-        box-shadow: 0 10px 20px rgba(30, 41, 59, 0.8);
-        color: #cbd5e1;
-        text-align: left;
-    }
-
-    .card-back h3 {
-        margin-bottom: 1rem;
-        font-weight: 700;
-        color: #a5b4fc;
-        text-align: center;
-    }
-
-    .card-back small {
-        display: block;
-        color: #94a3b8;
-        font-size: 0.85rem;
-    }
-
-    .btn {
-        margin-top: auto;
-        align-self: center;
-        padding: 0.7rem 1.8rem;
-        background-color: #a78bfa;
-        border: none;
-        border-radius: 30px;
-        font-weight: 600;
-        color: #1e293b;
-        font-size: 1rem;
-        cursor: pointer;
-        box-shadow: 0 8px 15px rgba(167, 139, 250, 0.4);
-        transition: background-color 0.3s ease;
-    }
-
-    .btn:hover {
-        background-color: #7c3aed;
-        color: white;
-    }
-</style>
-</head>
-
-<h1>Liste des catégories</h1>
-
-<body>
-
-<div class="cards-container">
-    {% for c in categories %}
-        <div class="card" id="card-{{ c.id }}">
-            <div class="card-inner">
-                <div class="card-front">
-                    <h2>{{ c.libelle }}</h2>
-                    {% set images = [
-    '/img/cate_restaurant.jpg',
-    '/img/cate_hebergement.jpg',
-    '/img/cate_attention.jpg',
-    '/img/cate_activite.jpg',
-    '/img/cate_petit_truc.jpg'
-] %}
-
-                    <img src="{{ images[loop.index0 % images|length] }}" alt="Image catégorie" style="width:100%;height:200px;object-fit:cover;border-radius:10px;margin-bottom:1rem;">
-                    <button class="btn flipBtn" data-id="{{ c.id }}">Voir la catégorie</button>
-                </div>
-                <div class="card-back">
-                    <h3>Description</h3>
-                                        <p>{{ c.description|default('Aucune description.') }}</p>
-
-                    <a href="/categories/{{ c.id }}" class="btn" style="margin-top: 2rem; display: block; text-align: center; background-color: #4f46e5; color: #fff; font-size: 1.1rem;">Voir plus</a>
-                    <button class="btn flipBackBtn" data-id="{{ c.id }}">Retour</button>
+        {% for c in categories %}
+            <div class="card" id="card-{{ c.id }}">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <h2>{{ c.libelle }}</h2>
+                        <img src="{{ images[loop.index0 % images|length] }}" alt="Image catégorie"
+                             style="width:100%;height:200px;object-fit:cover;border-radius:10px;margin-bottom:1rem;">
+                        <button class="btn flipBtn" data-id="{{ c.id }}">Voir la catégorie</button>
+                    </div>
+                    <div class="card-back">
+                        <h3>Description</h3>
+                        <p>{{ c.description|default('Aucune description.') }}</p>
+                        <a href="/categories/{{ c.id }}" class="btn" style="margin-top: 2rem;">Voir plus</a>
+                        <button class="btn flipBackBtn" data-id="{{ c.id }}">Retour</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    {% else %}
-        <p>Aucune catégorie disponible.</p>
-    {% endfor %}
-</div>
-<button class="back-btn" onclick="retour()">Retour</button>
+        {% else %}
+            <p>Aucune catégorie disponible.</p>
+        {% endfor %}
+    </div>
 
-<script>
+    <button class="back-btn" onclick="retour()">Retour</button>
 
-    function retour() {
-        window.history.back();
-    }
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-    document.querySelectorAll('.flipBtn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const card = document.getElementById('card-' + this.dataset.id);
-            card.classList.add('flipped');
+        .cards-container {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 2rem;
+            justify-content: flex-start;
+            overflow-x: auto;
+            width: 100%;
+        }
+
+        .card {
+            width: 320px;
+            height: 400px;
+            perspective: 1500px;
+            cursor: pointer;
+            margin-top: 2.5rem;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            backface-visibility: hidden;
+            overflow-y: auto;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            color: #fff;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.5);
+        }
+
+        .card-front h2 {
+            font-size: 2rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .card-front p {
+            font-size: 1.1rem;
+            line-height: 1.4;
+            opacity: 0.85;
+        }
+
+        .card-back {
+            background: #1e293b;
+            transform: rotateY(180deg);
+            box-shadow: 0 10px 20px rgba(30, 41, 59, 0.8);
+            color: #cbd5e1;
+            text-align: left;
+        }
+
+        .card-back h3 {
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: #a5b4fc;
+            text-align: center;
+        }
+
+        .card-back small {
+            display: block;
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+
+        .btn {
+            margin-top: auto;
+            align-self: center;
+            padding: 0.7rem 1.8rem;
+            background-color: #a78bfa;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 8px 15px rgba(167, 139, 250, 0.4);
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #7c3aed;
+            color: white;
+        }
+
+        .back-btn {
+
+            padding: 0.5rem 1.5rem;
+            background-color: #64748b;
+            border: none;
+            color: white;
+            border-radius: 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            display: block;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .back-btn:hover {
+            background-color: palevioletred;
+        }
+
+        .title-coffret {
+            font-size: 3rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            text-align: center;
+            background: linear-gradient(90deg, #ff00cc, #3333ff, #00ffcc);
+            background-size: 200% auto;
+            color: transparent;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientMove 4s ease infinite;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            margin-bottom: 2rem;
+        }
+
+        @keyframes gradientMove {
+            0% {
+                background-position: 0% center;
+            }
+            50% {
+                background-position: 100% center;
+            }
+            100% {
+                background-position: 0% center;
+            }
+        }
+
+        .title-coffret:hover {
+            filter: brightness(1.2);
+            transform: scale(1.05);
+            transition: all 0.3s ease;
+        }
+
+    </style>
+
+    <script>
+        function retour() {
+            window.history.back();
+        }
+
+        document.querySelectorAll('.flipBtn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const card = document.getElementById('card-' + this.dataset.id);
+                card.classList.add('flipped');
+            });
         });
-    });
-    document.querySelectorAll('.flipBackBtn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const card = document.getElementById('card-' + this.dataset.id);
-            card.classList.remove('flipped');
-        });
-    });
-</script>
 
-</body>
-</html>
+        document.querySelectorAll('.flipBackBtn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const card = document.getElementById('card-' + this.dataset.id);
+                card.classList.remove('flipped');
+            });
+        });
+    </script>
+
 {% endblock %}

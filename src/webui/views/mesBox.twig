@@ -20,13 +20,6 @@
             color: var(--text-color);
         }
 
-        .mes-box-section h1 {
-            font-size: 2.4rem;
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 2.5rem;
-            color: var(--primary-color);
-        }
 
         .no-box {
             text-align: center;
@@ -101,10 +94,38 @@
                 width: 100%;
             }
         }
+
+        .title-coffret {
+            font-size: 3rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            text-align: center;
+            background: linear-gradient(90deg, #ff00cc, #3333ff, #00ffcc);
+            background-size: 200% auto;
+            color: transparent;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientMove 4s ease infinite;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            margin-bottom: 2rem;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% center; }
+            50% { background-position: 100% center; }
+            100% { background-position: 0% center; }
+        }
+
+        .title-coffret:hover {
+            filter: brightness(1.2);
+            transform: scale(1.05);
+            transition: all 0.3s ease;
+        }
     </style>
 
     <div class="mes-box-section" role="main" aria-labelledby="mes-box-title">
-        <h1 id="mes-box-title">Mes Box</h1>
+        <h1 class="title-coffret">Mes Box</h1>
 
         {% if boxes is empty %}
             <p class="no-box">Vous n'avez encore créé aucune box.</p>

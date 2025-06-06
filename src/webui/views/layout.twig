@@ -4,300 +4,195 @@
     <meta charset="UTF-8">
     <title>{% block title %}Giftbox{% endblock %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        /* === CSS mis ici pour simplifier === */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+        }
+
+        #nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 240px;
+            height: 100vh;
+            background: #2c3e50;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        #nav-header {
+            padding: 24px 20px 12px 20px;
+            background: #22313f;
+        }
+
+        #nav-title {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        #nav-title i {
+            margin-left: 8px;
+        }
+
+        #nav-content {
+            flex: 1;
+            padding: 20px 0;
+        }
+
+        .nav-button {
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .nav-button i {
+            margin-right: 12px;
+        }
+
+        .nav-button:hover {
+            background: #34495e;
+        }
+
+        #nav-footer {
+            background: #22313f;
+            padding: 19px 20px;
+        }
+
+        #nav-footer-heading {
+            display: flex;
+            align-items: center;
+        }
+
+        #nav-footer-titlebox {
+            flex: 1;
+        }
+
+        #nav-footer-title {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        #nav-footer-subtitle {
+            display: block;
+            font-size: 0.9em;
+            color: #bfc9d1;
+        }
+
+        .container {
+            margin-left: 240px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1;
+            padding: 24px;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: #fff;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            height: 57px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-subtitle {
+            font-size: 0.9em;
+            color: #bfc9d1;
+            font-style: italic;
+        }
+
+    </style>
 </head>
 <body>
-    <div id="nav-bar">
-        <div id="nav-header">
-            <a id="nav-title" href="/">Giftbox <i class="fas fa-gift"></i></a>
-            <label for="nav-toggle"><span id="nav-toggle-burger"></span></label>
-            <hr/>
-        </div>
-        <div id="nav-content">
-            <a href="/" class="nav-button">
-                <i class="fas fa-home"></i>
-                <span>Marcelin</span>
-            </a>
-            <a href="/catalogue" class="nav-button">
-                <i class="fas fa-list"></i>
-                <span>Catalogue</span>
-            </a>
-            <a href="/categories" class="nav-button">
-                <i class="fas fa-list"></i>
-                <span>Liste catégories</span>
-            </a>
-            <a href="/coffrets" class="nav-button">
-                <i class="fas fa-box"></i>
-                <span>Coffrets</span>
-            </a>
-            <a href="/creer-box" class="nav-button">
-                <i class="fas fa-plus-square"></i>
-                <span>Créer un coffret personnalisé</span>
-            </a>
-            <a href="/mes-box" class="nav-button">
-                <i class="fa-box-open"></i>
-                <span>Mes coffrets</span>
-            </a>
-        </div>
-        <div id="nav-footer">
-            <div id="nav-footer-heading">
+<div id="nav-bar">
+    <div id="nav-header">
+        <a id="nav-title" href="/">Giftbox <i class="fas fa-gift"></i></a>
+        <hr/>
+    </div>
+    <div id="nav-content">
+        <a href="/" class="nav-button">
+            <i class="fas fa-home"></i>
+            <span>Accueil</span>
+        </a>
+        <a href="/catalogue" class="nav-button">
+            <i class="fas fa-list"></i>
+            <span>Catalogue</span>
+        </a>
+        <a href="/categories" class="nav-button">
+            <i class="fas fa-list"></i>
+            <span>Liste catégories</span>
+        </a>
+        <a href="/coffrets" class="nav-button">
+            <i class="fas fa-box"></i>
+            <span>Coffrets</span>
+        </a>
+        <a href="/creer-box" class="nav-button">
+            <i class="fas fa-plus-square"></i>
+            <span>Créer un coffret personnalisé</span>
+        </a>
+        <a href="/mes-box" class="nav-button">
+            <i class="fas fa-box-open"></i>
+            <span>Mes coffrets</span>
+        </a>
+        <a href="/signin" class="nav-button">
+            <i class="fas fa-sign-in-alt"></i>
+            <span>Connexion</span>
+        </a>
+    </div>
+    <div id="nav-footer">
+        <div id="nav-footer-heading">
+            {% if auth.isAuthenticated() %}
+                {% set currentUser = auth.getSignedInUser() %}
                 <div id="nav-footer-titlebox">
-                    <a id="nav-footer-title" href="#">Utilisateur</a>
+                    <a id="nav-footer-title" href="#">{{ currentUser.user_id }}</a>
                     <span id="nav-footer-subtitle">Connecté</span>
                 </div>
-                <label for="nav-footer-toggle"><i class="fas fa-sign-out-alt"></i></label>
-            </div>
+                <a href="/signout" id="nav-footer-toggle"><i class="fas fa-sign-out-alt"></i></a>
+            {% else %}
+                <div id="nav-footer-titlebox">
+                    <a id="nav-footer-title" href="/signin">Utilisateur</a>
+                    <span id="nav-footer-subtitle">Déconnecté</span>
+                </div>
+                <a href="/signin" id="nav-footer-toggle"><i class="fas fa-sign-in-alt"></i></a>
+            {% endif %}
         </div>
     </div>
+</div>
 
-    <div class="container">
-        <main>
-            {% block content %}{% endblock %}
-        </main>
+<div class="container">
+    <main>
+        {% block content %}{% endblock %}
+    </main>
 
-        <footer>
-            {% block footer %}
-                <div class="footer-content">
-                    <p>&copy; 2025 Giftbox - IUT Nancy-Charlemagne</p>
-                    <p class="footer-subtitle">Plateforme de gestion de coffrets cadeaux</p>
-                </div>
-            {% endblock %}
-        </footer>
-    </div>
+    <footer>
+        {% block footer %}
+            <div class="footer-content">
+                <p>&copy; 2025 Giftbox - IUT Nancy-Charlemagne</p>
+                <p class="footer-subtitle">Plateforme de gestion de coffrets cadeaux</p>
+            </div>
+        {% endblock %}
+    </footer>
+</div>
 </body>
 </html>
-<style>
-/* === BASE === */
-body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background: #f7f7f7;
-}
-
-/* === NAVIGATION BAR === */
-#nav-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 240px;
-    height: 100vh;
-    background: #2c3e50;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    z-index: 1000;
-}
-
-/* Header */
-#nav-header {
-    padding: 24px 20px 12px 20px;
-    background: #22313f;
-}
-
-#nav-title {
-    color: #fff;
-    text-decoration: none;
-    font-size: 1.5em;
-    font-weight: bold;
-}
-
-#nav-title i {
-    margin-left: 8px;
-}
-
-/* Navigation content */
-#nav-content {
-    flex: 1;
-    padding: 20px 0;
-}
-
-.nav-button {
-    display: flex;
-    align-items: center;
-    padding: 12px 24px;
-    color: #fff;
-    text-decoration: none;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.nav-button i {
-    margin-right: 12px;
-}
-
-.nav-button:hover {
-    background: #34495e;
-    color: #fff;
-    text-decoration: none;
-}
-
-.nav-button:active,
-.nav-button:focus {
-    color: #fff;
-    text-decoration: none;
-    outline: none;
-}
-
-/* Footer */
-#nav-footer {
-    background: #22313f;
-    padding: 19px 20px;
-}
-
-#nav-footer-heading {
-    display: flex;
-    align-items: center;
-}
-
-#nav-footer-avatar img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 12px;
-}
-
-#nav-footer-titlebox {
-    flex: 1;
-}
-
-#nav-footer-title {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-#nav-footer-subtitle {
-    display: block;
-    font-size: 0.9em;
-    color: #bfc9d1;
-}
-
-/* === MAIN CONTAINER === */
-.container {
-    margin-left: 240px;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Header */
-header {
-    padding: 32px 24px 16px 24px;
-    background: #fff;
-    border-bottom: 1px solid #e0e0e0;
-}
-
-/* Main content */
-main {
-    flex: 1;
-    padding: 24px;
-}
-
-/* Footer */
-footer {
-    background: #2c3e50;
-    color: #fff;
-    padding: 15px 24px;
-    margin-top: auto;
-}
-
-.footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.footer-content p {
-    margin: 0;
-    text-align: center;
-}
-
-.footer-content p:first-child {
-    font-size: 1em;
-    font-weight: 500;
-    margin-bottom: 8px;
-}
-
-.footer-subtitle {
-    font-size: 0.9em;
-    color: #bfc9d1;
-    font-style: italic;
-}
-
-/* === RESPONSIVE === */
-@media (max-width: 800px) {
-    #nav-bar {
-        width: 60px;
-    }
-
-    .container {
-        margin-left: 60px;
-    }
-
-    #nav-header,
-    #nav-footer,
-    .nav-button span,
-    #nav-footer-titlebox,
-
-    .nav-button i {
-        margin: 0 auto;
-    }
-}
-</style>
-<body>
-    <div id="nav-bar">
-        <div id="nav-header">
-            <a id="nav-title" href="/">Giftbox <i class="fas fa-gift"></i></a>
-            <label for="nav-toggle"><span id="nav-toggle-burger"></span></label>
-            <hr/>
-        </div>
-        <div id="nav-content">
-            <a href="/" class="nav-button">
-                <i class="fas fa-home"></i>
-                <span>Accueil</span>
-            </a>
-            <a href="/categories" class="nav-button">
-                <i class="fas fa-list"></i>
-                <span>Liste catégories</span>
-            </a>
-            <a href="/coffrets" class="nav-button">
-                <i class="fas fa-box"></i>
-                <span>Coffrets</span>
-            </a>
-            <a href="/creer-box" class="nav-button">
-                <i class="fas fa-box"></i>
-                <span>créer un coffret personnalisée</span>
-            </a>
-            <a href="/mes-box" class="nav-button">
-                <i class="fas fa-box"></i>
-                <span>Mes coffrets</span>
-            </a>
-            <a href="/signin" class="nav-button">
-                <i class="fas fa-sign-in-alt"></i>
-                <span>Connexion</span>
-            </a>
-        </div>
-        <div id="nav-footer">
-            <div id="nav-footer-heading">
-                {% if auth.isAuthenticated() %}
-                    {% set currentUser = auth.getSignedInUser() %}
-                    <div id="nav-footer-titlebox">
-                        <a id="nav-footer-title" href="#">{{ currentUser.user_id }}</a>
-                        <span id="nav-footer-subtitle">Connecté</span>
-                    </div>
-                    <a href="/signout" id="nav-footer-toggle"><i class="fas fa-sign-out-alt"></i></a>
-                {% else %}
-                    <div id="nav-footer-titlebox">
-                        <a id="nav-footer-title" href="/signin">Utilisateur</a>
-                        <span id="nav-footer-subtitle">Déconnecté</span>
-                    </div>
-                    <a href="/signin" id="nav-footer-toggle"><i class="fas fa-sign-in-alt"></i></a>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-
-    <div class="container">
-        <main>
-        </main>
-    </div>
-</body>
