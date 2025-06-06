@@ -96,10 +96,33 @@
             letter-spacing: 1px;
         }
 
-
         a {
             text-decoration: none;
         }
+
+        .prestations-list li {
+            list-style: none;
+            margin: 1rem 0;
+            padding: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #fdfdfd;
+            transition: background-color 0.3s ease;
+        }
+
+        .prestation-link {
+            display: flex;
+            justify-content: space-between;
+            text-decoration: none;
+            color: inherit;
+            width: 100%;
+            height: 100%;
+        }
+
+        .prestations-list li:hover {
+            background-color: #f0f8ff;
+        }
+
     </style>
 
     <div class="category-page">
@@ -113,15 +136,17 @@
 
         <ul class="prestations-list">
             {% for p in prestations %}
-            <a href="/prestation?id={{ p.id }}">
                 <li>
-                    <span class="prestation-name">{{ p.libelle }}</span> -
-                    <span class="prestation-price">{{ p.tarif }} €</span>
+                    <a href="/prestation?id={{ p.id }}" class="prestation-link">
+                        <span class="prestation-name">{{ p.libelle }}</span>
+                        <span class="prestation-price">{{ p.tarif }} €</span>
+                    </a>
                 </li>
             {% else %}
                 <li class="no-prestations">Aucune prestation disponible.</li>
             {% endfor %}
         </ul>
+
 
         <button class="back-btn" onclick="retour()">Retour</button>
     </div>
