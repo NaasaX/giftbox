@@ -120,21 +120,26 @@
             border-radius: 4px;
         }
 
-
-        @media (max-width: 480px) {
-            .box-container {
-                padding: 2rem 1.5rem;
-                margin: 2rem 1rem;
-            }
-
-            .box-container h1 {
-                font-size: 2rem;
-            }
-
-            .prestations-title {
-                font-size: 1.4rem;
-            }
+        .temporary-prestations {
+            background: #fff3cd;
+            border-left: 6px solid #ffc107;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
         }
+
+        .temporary-prestations h3 {
+            color: #856404;
+            margin: 0 0 0.5rem 0;
+            font-size: 1.1rem;
+        }
+
+        .temporary-prestations p {
+            color: #856404;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
     </style>
 
     {% if flash_message %}
@@ -151,43 +156,61 @@
             <p><strong>Description :</strong> {{ box.description ?: 'Aucune description disponible.' }}</p>
             <p><strong>Créée par :</strong> {{ box.createur ? box.createur.name : 'Inconnu' }}</p>
             <p><strong>Montant :</strong> {{ box.montant|number_format(2, ',', ' ') }} €</p>
+            <p><strong>Etat :</strong> {{ box.statut }}</p>
         </div>
 
         <div class="prestations">
             <h2 class="prestations-title">Prestations associées</h2>
 
-            {% if box.prestations is empty %}
+            {% if box.statut == 1 and prestations_temporaires is not empty %}
+                <div class="temporary-prestations">
+                    <h3>⚠️ Prestations temporaires</h3>
+                    <p>Ces prestations seront définitivement ajoutées lors de la validation du coffret.</p>
+                </div>
+            {% endif %}
+
+            {% if (box.statut == 1 and prestations_temporaires is empty) or (box.statut != 1 and box.prestations is empty) %}
                 <p class="no-presta">Aucune prestation associée à cette box.</p>
             {% else %}
                 <ul class="prestations-list">
-                    {% for presta in box.prestations %}
-                        <li>
-                            <strong>{{ presta.libelle }}</strong>
-                            Tarif : {{ presta.tarif|number_format(2, ',', ' ') }} €<br>
-                            Quantité : {{ presta.pivot.quantite }}
+                    {% if box.statut == 1 %}
+                        {# Afficher les prestations temporaires du cookie #}
+                        {% for presta in prestations_temporaires %}
+                            <li>
+                                <strong>{{ presta.libelle }}</strong>
+                                Tarif : {{ presta.tarif|number_format(2, ',', ' ') }} €<br>
+                                Quantité : {{ presta.quantite }}
 
-                            {% if box.statut == 1 %}
                                 <form method="post" action="/box/{{ box.id }}/prestation/{{ presta.id }}/delete" style="margin-top: 0.5rem;">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                                     <button type="submit" class="delete-presta-btn" title="Supprimer cette prestation">
                                         Supprimer
                                     </button>
                                 </form>
-                            {% endif %}
-                        </li>
-                    {% endfor %}
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        {# Afficher les prestations validées de la base #}
+                        {% for presta in box.prestations %}
+                            <li>
+                                <strong>{{ presta.libelle }}</strong>
+                                Tarif : {{ presta.tarif|number_format(2, ',', ' ') }} €<br>
+                                Quantité : {{ presta.pivot.quantite }}
+                            </li>
+                        {% endfor %}
+                    {% endif %}
                 </ul>
             {% endif %}
         </div>
+
         {% if box.statut != 2 %}
-        <form method="post" action="/box/valider">
-            <button type="submit" class="btn btn-primary">Valider ce coffret</button>
-        </form>
+            <form method="post" action="/box/valider">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <button type="submit" class="btn btn-primary">Valider ce coffret</button>
+            </form>
         {% endif %}
     </div>
 
-
-
     {% include 'catalogueByBox.twig' with {'box': box} %}
-
 
 {% endblock %}

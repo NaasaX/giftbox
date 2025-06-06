@@ -2,22 +2,38 @@
 
 namespace Giftbox\webui\actions\Post;
 
+use DomainException;
+use Giftbox\ApplicationCore\Application\UseCases\BoxValidationServiceInterface;
 use Giftbox\ApplicationCore\Domain\Entities\Box;
+use Giftbox\ApplicationCore\Domain\Entities\Prestation;
+use Giftbox\Webui\providers\CsrfTokenProvider;
 use Giftbox\Webui\Providers\SessionAuthProvider;
+use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpForbiddenException;
 
-class PostValidateBoxAction {
-
+class PostValidateBoxAction
+{
     private SessionAuthProvider $authProvider;
+    private BoxValidationServiceInterface $validationService;
 
-    public function __construct(SessionAuthProvider $authProvider)
+    public function __construct(SessionAuthProvider $authProvider, BoxValidationServiceInterface $validationService)
     {
         $this->authProvider = $authProvider;
+        $this->validationService = $validationService;
     }
 
-    public function __invoke(Request $request, Response $response, array $args): Response {
+    public function __invoke(Request $request, Response $response, array $args): Response
+    {
+        $data = $request->getParsedBody();
+        try {
+            $token = $data['csrf_token'] ?? '';
+            CsrfTokenProvider::check($token);
+        } catch (\Exception $e) {
+            $response->getBody()->write("Erreur CSRF : " . $e->getMessage());
+            return $response->withStatus(403);
+        }
 
         $boxId = $_SESSION['current_box_id'] ?? null;
         if (!$boxId) {
@@ -25,37 +41,27 @@ class PostValidateBoxAction {
             return $response->withStatus(400);
         }
 
-        $box = Box::find($boxId);
-        if (!$box) {
-            $response->getBody()->write("Box introuvable.");
-            return $response->withStatus(404);
-        }
-
         $userRole = $this->authProvider->getUserRole();
         $userId = $this->authProvider->getCurrentUserId();
 
-        if ($userRole === null || $userRole < 1 || $box->createur_id !== $userId) {
-            throw new HttpForbiddenException($request, "Vous n'avez pas les droits nécessaires pour valider cette box.");
+        try {
+            $this->validationService->validateBoxById($boxId, $userId, $userRole);
+            // Validation OK, nettoyage session et message
+            unset($_SESSION['current_box_id']);
+            $_SESSION['flash_message'] = "Coffret validé avec succès !";
+        } catch (DomainException $e) {
+            $_SESSION['flash_message'] = $e->getMessage();
+            return $response->withHeader('Location', '/box/' . $boxId)->withStatus(302);
+        } catch (InvalidArgumentException $e) {
+            $response->getBody()->write($e->getMessage());
+            return $response->withStatus(404);
+        } catch (HttpForbiddenException $e) {
+            throw $e; // laisse Slim gérer la 403
+        } catch (\Exception $e) {
+            $response->getBody()->write("Erreur interne : " . $e->getMessage());
+            return $response->withStatus(500);
         }
 
-        // Vérifier qu'il y a au moins 2 prestations associées
-        $prestationCount = $box->prestations()->count();
-        if ($prestationCount < 2) {
-            $_SESSION['flash_message'] = "Vous devez ajouter au moins deux prestations pour valider ce coffret.";
-            return $response
-                ->withHeader('Location', '/box/' . $boxId)
-                ->withStatus(302);
-        }
-
-        $box->statut = 2;
-        $box->save();
-
-        unset($_SESSION['current_box_id']);
-        $_SESSION['flash_message'] = "Coffret validé avec succès !";
-
-        return $response
-            ->withHeader('Location', '/box/' . $boxId)
-            ->withStatus(302);
-
+        return $response->withHeader('Location', '/box/' . $boxId)->withStatus(302);
     }
 }

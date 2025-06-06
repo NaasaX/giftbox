@@ -1,31 +1,196 @@
 {% block content %}
+    <style>
+        :root {
+            --primary-color: #2980b9;
+            --secondary-color: #ecf0f1;
+            --text-color: #2c3e50;
+            --accent-color: #1abc9c;
+            --light-bg: #fdfdfd;
+            --font-stack: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --success-color: #27ae60;
+            --hover-bg: #f4f9fd;
+        }
 
-    <div class="catalogue-container" role="main" aria-labelledby="catalogue-title">
+        .catalogue-container {
+            max-width: 1200px;
+            margin: 3rem auto 4rem;
 
-        {% for categorie in categories %}
-            <div class="categorie-section">
-                <h2>{{ categorie.libelle }}</h2>
+            padding: 2.5rem 3rem;
+            border-radius: 18px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+            font-family: var(--font-stack);
+            color: var(--text-color);
+            animation: fadeIn 0.6s ease-in-out;
+        }
 
-                {% if categorie.prestations is empty %}
-                    <p class="no-prestation">Aucune prestation dans cette catégorie.</p>
-                {% else %}
-                    <ul class="prestation-list">
-                        {% for prestation in categorie.prestations %}
-                            <li class="prestation-item">
-                                <b>{{ prestation.libelle }}</b>
-                                <p>{{ prestation.description }}</p>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-                                <form action="/panier/ajouter" method="post">
-                                    <input type="hidden" name="prestation_id" value="{{ prestation.id }}">
-                                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                                    <button type="submit">Ajouter au panier</button>
-                                </form>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </div>
-        {% endfor %}
-    </div>
+        .categorie-section {
+            margin-bottom: 3rem;
+        }
+
+        .categorie-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .categorie-section h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 0.6rem;
+            text-align: left;
+        }
+
+        .no-prestation {
+            font-style: italic;
+            color: #999;
+            margin: 1.5rem 0;
+            font-size: 1rem;
+            text-align: center;
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .prestation-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            overflow-x: auto;
+            gap: 1.5rem;
+            padding-bottom: 1rem;
+            scroll-behavior: smooth;
+        }
+
+        .prestation-list::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .prestation-list::-webkit-scrollbar-track {
+            background: var(--secondary-color);
+            border-radius: 4px;
+        }
+
+        .prestation-list::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        .prestation-list::-webkit-scrollbar-thumb:hover {
+            background: #1f618d;
+        }
+
+        .prestation-item {
+            background: var(--hover-bg);
+            padding: 2rem;
+            border-left: 6px solid var(--primary-color);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-width: 350px;
+            flex-shrink: 0;
+            height: auto;
+        }
+
+        .prestation-item:hover {
+            background: #ebf7ff;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(41, 128, 185, 0.15);
+        }
+
+        .prestation-item b {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .prestation-item p {
+            margin: 0 0 1rem 0;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-color);
+            flex-grow: 1;
+        }
+
+        .prestation-item form {
+            margin: 0;
+            margin-top: auto;
+        }
+
+        .prestation-item button {
+            background: linear-gradient(135deg, var(--success-color), #2ecc71);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .prestation-item button:hover {
+            background: linear-gradient(135deg, #229954, var(--success-color));
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.3);
+        }
+
+        .prestation-item button:active {
+            transform: translateY(0);
+        }
+
+
+    </style>
+
+    {% if categories is not empty %}
+        <div class="catalogue-container" role="main" aria-labelledby="catalogue-title">
+
+            {% for categorie in categories %}
+                <div class="categorie-section">
+                    <h2>{{ categorie.libelle }}</h2>
+
+                    {% if categorie.prestations is empty %}
+                        <p class="no-prestation">Aucune prestation dans cette catégorie.</p>
+                    {% else %}
+                        <ul class="prestation-list">
+                            {% for prestation in categorie.prestations %}
+                                <li class="prestation-item">
+                                    <b>{{ prestation.libelle }}</b>
+                                    <p>{{ prestation.description }}</p>
+
+                                    <form action="/panier/ajouter" method="post">
+                                        <input type="hidden" name="prestation_id" value="{{ prestation.id }}">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                                        <button type="submit">Ajouter au panier</button>
+                                    </form>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
 {% endblock content %}
