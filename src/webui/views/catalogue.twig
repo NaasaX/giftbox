@@ -3,163 +3,138 @@
 {% block content %}
     <style>
         :root {
-            --primary-color: #2980b9;
-            --secondary-color: #ecf0f1;
-            --text-color: #2c3e50;
-            --accent-color: #1abc9c;
-            --light-bg: #fdfdfd;
-            --font-stack: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            --success-color: #27ae60;
-            --hover-bg: #f4f9fd;
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --bg-color: #ffffff;
+            --card-shadow: rgba(0, 0, 0, 0.05);
+            --font-stack: 'Segoe UI', Tahoma, sans-serif;
         }
 
         .catalogue-container {
             max-width: 1200px;
-            margin: 3rem auto 4rem;
-
-            padding: 2.5rem 3rem;
-            border-radius: 18px;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+            margin: 2rem auto;
+            padding: 1.5rem;
             font-family: var(--font-stack);
-            color: var(--text-color);
-            animation: fadeIn 0.6s ease-in-out;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .categorie-section {
-            margin-bottom: 3rem;
-        }
-
-        .categorie-section:last-child {
-            margin-bottom: 0;
-        }
-
-        .categorie-section h2 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
+        .section-title {
+            font-size: 3rem;
             color: var(--primary-color);
-            border-bottom: 3px solid var(--secondary-color);
-            padding-bottom: 0.6rem;
-            text-align: left;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.3rem;
         }
 
-        .no-prestation {
-            font-style: italic;
-            color: #999;
-            margin: 1.5rem 0;
-            font-size: 1rem;
-            text-align: center;
-            background: #f8f9fa;
-            padding: 1rem;
-            border-radius: 8px;
-        }
-
-        .prestation-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            overflow-x: auto;
+        .prestation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 1.5rem;
-            padding-bottom: 1rem;
-            scroll-behavior: smooth;
+            margin-bottom: 2rem;
         }
 
-        .prestation-list::-webkit-scrollbar {
-            height: 8px;
-        }
-
-        .prestation-list::-webkit-scrollbar-track {
-            background: var(--secondary-color);
-            border-radius: 4px;
-        }
-
-        .prestation-list::-webkit-scrollbar-thumb {
-            background: var(--primary-color);
-            border-radius: 4px;
-        }
-
-        .prestation-list::-webkit-scrollbar-thumb:hover {
-            background: #1f618d;
-        }
-
-        .prestation-item {
-            background: var(--hover-bg);
-            padding: 2rem;
-            border-left: 6px solid var(--primary-color);
+        .prestation-card {
+            background: var(--bg-color);
+            border: 1px solid #e0e0e0;
             border-radius: 12px;
-            transition: all 0.3s ease;
-            position: relative;
+            padding: 1rem;
+            box-shadow: 0 2px 8px var(--card-shadow);
             display: flex;
             flex-direction: column;
-            min-width: 350px;
-            flex-shrink: 0;
-            height: auto;
+            text-align: center;
+            transition: transform 0.2s ease;
+            height: 350px;
+            overflow: hidden;
         }
 
-        .prestation-item:hover {
-            background: #ebf7ff;
+        .prestation-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(41, 128, 185, 0.15);
         }
 
-        .prestation-item b {
-            display: block;
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--primary-color);
-        }
-
-        .prestation-item p {
-            margin: 0 0 1rem 0;
-            font-size: 1rem;
-            line-height: 1.6;
-            color: var(--text-color);
-            flex-grow: 1;
-        }
-
-        .prestation-item form {
-            margin: 0;
-            margin-top: auto;
-        }
-
-        .prestation-item button {
-            background: linear-gradient(135deg, var(--success-color), #2ecc71);
-            color: white;
-            border: none;
-            padding: 0.7rem 1.5rem;
+        .prestation-card img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
             border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
+            margin-bottom: 1rem;
+            flex-shrink: 0; /* Empêche la compression de l'image */
+        }
+
+        .prestation-card .libelle {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+            flex-shrink: 0; /* Empêche la compression du titre */
+            line-height: 1.3;
+            min-height: 2.6rem; /* Espace pour 2 lignes de titre */
+            display: flex;
             align-items: center;
-            gap: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            justify-content: center;
+            text-decoration: none;
         }
 
-        .prestation-item button:hover {
-            background: linear-gradient(135deg, #229954, var(--success-color));
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.3);
+        .prestation-card .prix {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            flex-shrink: 0; /* Empêche la compression du prix */
+            font-size: 1.1rem;
         }
 
-        .prestation-item button:active {
-            transform: translateY(0);
+        .prestation-card .description {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.4;
+            flex-grow: 1; /* Prend l'espace restant */
+            display: flex;
+            align-items: flex-start;
+            text-align: justify;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: auto; /* Pousse vers le bas */
+        }
+
+        .prestation-card .categorie {
+            font-size: 0.95rem;
+            color: #777;
+            margin-bottom: auto;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .libelle {
+            position: relative;
+        }
+
+        .libelle::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background-color: #2980b9;
+            transition: width 0.5s ease;
+        }
+
+        a:hover .libelle::after {
+            width: 100%;
+        }
+
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .prestation-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 1rem;
+            }
+
+            .prestation-card {
+                height: 350px;
+            }
         }
 
         .title-coffret {
@@ -179,9 +154,15 @@
         }
 
         @keyframes gradientMove {
-            0% { background-position: 0% center; }
-            50% { background-position: 100% center; }
-            100% { background-position: 0% center; }
+            0% {
+                background-position: 0% center;
+            }
+            50% {
+                background-position: 100% center;
+            }
+            100% {
+                background-position: 0% center;
+            }
         }
 
         .title-coffret:hover {
@@ -190,38 +171,66 @@
             transition: all 0.3s ease;
         }
 
+        .no-presta {
+            font-style: italic;
+            color: #999;
+            margin-top: 1.2rem;
+            font-size: 1rem;
+        }
+
+        .btnAdd {
+            background-color: #27ae60;
+            color: #fff;
+            border: none;
+            padding: 0.6rem 1rem;
+            margin-top: 0.5rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+            width: 100%;
+        }
+
+        .btnAdd:hover {
+            background-color: #219150;
+            transform: translateY(-2px);
+        }
+
+
     </style>
 
     <h1 class="title-coffret">Catalogue</h1>
 
-    {% if categories is not empty %}
-        <div class="catalogue-container" role="main" aria-labelledby="catalogue-title">
+    <div class="catalogue-container">
 
-            {% for categorie in categories %}
-                <div class="categorie-section">
-                    <h2>{{ categorie.libelle }}</h2>
+        {% for categorie in categories %}
 
-                    {% if categorie.prestations is empty %}
-                        <p class="no-prestation">Aucune prestation dans cette catégorie.</p>
-                    {% else %}
-                        <ul class="prestation-list">
-                            {% for prestation in categorie.prestations %}
-                                <li class="prestation-item">
-                                    <b>{{ prestation.libelle }}</b>
-                                    <p>{{ prestation.description }}</p>
+            <div class="section-title">{{ categorie.libelle }}</div>
+            <div class="prestation-grid">
+                {% for prestation in categorie.prestations %}
+                    <a href="prestation?id={{ prestation.id }}">
+                        <div class="prestation-card">
+                            <img src="/img/{{ prestation.img }}" alt="Image de {{ prestation.libelle }}">
 
-                                    <form action="/panier/ajouter" method="post">
-                                        <input type="hidden" name="prestation_id" value="{{ prestation.id }}">
-                                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                                        <button type="submit">Ajouter au panier</button>
-                                    </form>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
+                            <div class="libelle">{{ prestation.libelle }}</div>
+                            <div class="prix">Prix : {{ prestation.tarif }} €</div>
+                            {% if prestation.description is defined %}
+                                <div class="description">{{ prestation.description|length > 100 ? prestation.description[:100] ~ '...' : prestation.description }}</div>
+                                <form action="/panier/ajouter" method="post">
+                                    <input type="hidden" name="prestation_id" value="{{ prestation.id }}">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                                    <button type="submit" class="btnAdd">Ajouter au panier</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <p class="no-presta">Aucune prestation associée à cette catégorie.</p>
+        {% if categorie.prestations is not empty %}
 
-{% endblock content %}
+        {% endif %}
+    </div>
+{% endblock %}
