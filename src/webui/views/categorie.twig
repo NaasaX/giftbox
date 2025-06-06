@@ -3,18 +3,128 @@
 {% block title %}{{ categorie.libelle }}{% endblock %}
 
 {% block content %}
-    <h1>{{ categorie.libelle }}</h1>
-    <p>{{ categorie.description }}</p>
-    <h2>Prestations</h2>
-    <ul>
-        {% for p in prestations %}
-            <li>{{ p.libelle }} - {{ p.tarif }} €</li>
-        {% else %}
-            <li>Aucune prestation disponible.</li>
-        {% endfor %}
-    </ul>
+    <style>
+        .category-page {
+            max-width: 700px;
+            margin: 3rem auto;
+            padding: 2rem;
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
 
-    <button class="back-btn" onclick="retour()">Retour</button>
+        .category-page h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+        }
+
+        .category-description {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 2.5rem;
+        }
+
+        .category-page h2 {
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem 0;
+            color: #2c3e50;
+        }
+
+        .prestations-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .prestations-list li {
+            background: #f8f9fa;
+            margin-bottom: 0.8rem;
+            padding: 1rem 1.2rem;
+            border-radius: 6px;
+            border-left: 3px solid #3498db;
+            transition: background-color 0.2s ease;
+        }
+
+        .prestations-list li:hover {
+            background: #e9ecef;
+        }
+
+        .prestation-name {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .prestation-price {
+            font-weight: 600;
+            color: #3498db;
+        }
+
+        .back-btn {
+            margin-top: 2.5rem;
+            padding: 0.7rem 1.4rem;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background: #2980b9;
+        }
+
+        .no-prestations {
+            color: #999;
+            font-style: italic;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .catLib {
+            font-size: 2.2rem;
+            color: #2c3e50;
+            text-align: center;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+
+        a {
+            text-decoration: none;
+        }
+    </style>
+
+    <div class="category-page">
+        <h1 class="catLib">Catégorie : {{ categorie.libelle }}</h1>
+
+        {% if categorie.description %}
+            <p class="category-description">{{ categorie.description }}</p>
+        {% endif %}
+
+        <h2>Prestations</h2>
+
+        <ul class="prestations-list">
+            {% for p in prestations %}
+            <a href="/prestation?id={{ p.id }}">
+                <li>
+                    <span class="prestation-name">{{ p.libelle }}</span> -
+                    <span class="prestation-price">{{ p.tarif }} €</span>
+                </li>
+            {% else %}
+                <li class="no-prestations">Aucune prestation disponible.</li>
+            {% endfor %}
+        </ul>
+
+        <button class="back-btn" onclick="retour()">Retour</button>
+    </div>
 
     <script>
         function retour() {
