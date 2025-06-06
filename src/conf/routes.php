@@ -35,6 +35,8 @@ return function (App $app, $authProvider, $getBoxDetailsService, $panierService,
     // Route 3 : GET /prestation?id=xxxx
     $app->get('/prestation', GetPrestationAction::class);
 
+    $app->get('/prestations', GetAllPrestationAction::class);
+
     // Route 4 : GET /coffrets
     $app->get('/coffrets', GetCoffretsAction::class);
 
