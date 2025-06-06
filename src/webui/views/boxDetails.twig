@@ -140,6 +140,28 @@
             font-size: 0.9rem;
         }
 
+        .catalogue-button-container {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .catalogue-btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .catalogue-btn:hover {
+            background-color: #1c6ea4;
+            transform: scale(1.03);
+        }
+
+
     </style>
 
     {% if flash_message %}
@@ -149,6 +171,10 @@
     {% endif %}
 
     <div class="box-container" role="main" aria-labelledby="box-title">
+        <div class="catalogue-button-container">
+            <a href="/catalogue" class="catalogue-btn">← Retour au catalogue</a>
+        </div>
+
         <h1 id="box-title">Détails de la Box</h1>
 
         <div class="info">
@@ -206,11 +232,11 @@
         {% if box.statut != 2 %}
             <form method="post" action="/box/valider">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                <button type="submit" class="btn btn-primary">Valider ce coffret</button>
+                <button type="submit" class="catalogue-btn">Valider ce coffret</button>
             </form>
         {% endif %}
     </div>
 
-    {% include 'catalogueByBox.twig' with {'box': box} %}
+    {# % include 'catalogueByBox.twig' with {'box': box} % #}
 
 {% endblock %}
