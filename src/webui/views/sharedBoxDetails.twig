@@ -74,6 +74,23 @@
             font-style: italic;
             font-size: 1.1rem;
         }
+
+        @media print {
+            button {
+                display: none;
+            }
+            body {
+                background: white;
+                color: black;
+            }
+            .box-container {
+                box-shadow: none;
+                border-radius: 0;
+                padding: 0;
+                margin: 0;
+                max-width: 100%;
+            }
+        }
     </style>
 
     <div class="box-container" role="main" aria-labelledby="box-title">
@@ -90,7 +107,7 @@
             {% if box.prestations is empty %}
                 <p>Aucune prestation associée à cette box.</p>
             {% else %}
-                {% if box.kdo == 1%}
+                {% if box.kdo == 1 %}
                     <div class="gift-message">
                         🎁 Cette box est un cadeau ! Message : "{{ box.message_kdo|default('Aucun message') }}"
                     </div>
@@ -115,6 +132,8 @@
                 {% endif %}
             {% endif %}
         </div>
+
+        <button onclick="window.print()" style="margin-top: 2rem; padding: 0.5rem 1rem; font-size: 1rem;">🖨️ Imprimer</button>
     </div>
 
 {% endblock %}
