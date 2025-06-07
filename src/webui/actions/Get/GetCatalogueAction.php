@@ -1,4 +1,5 @@
 <?php
+
 namespace Giftbox\webui\actions\Get;
 
 use Giftbox\ApplicationCore\Domain\Entities\Categorie;
@@ -12,9 +13,20 @@ class GetCatalogueAction
     {
         $categories = Categorie::with('prestations')->get();
 
+        $boxId = $_SESSION['current_box_id'] ?? null;
+
+        $flashMessage = $_SESSION['flash_message'] ?? null;
+        if ($flashMessage !== null) {
+            if ($boxId) {
+                $flashMessage .= " <a href='/box/$boxId'>Voir le coffret</a>";
+            }
+            unset($_SESSION['flash_message']);
+        }
+
         $twig = Twig::fromRequest($request);
         return $twig->render($response, 'catalogue.twig', [
             'categories' => $categories,
+            'flash_message' => $flashMessage,
         ]);
     }
 }
