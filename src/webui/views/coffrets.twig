@@ -12,31 +12,27 @@
             --hover-bg: #f4f9fd;
         }
 
-
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .coffret-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            font-family: var(--font-stack);
+            color: var(--text-color);
         }
 
         .coffret-title {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             font-weight: 800;
             text-align: center;
-            background: linear-gradient(90deg, #ff00cc, #3333ff, #00ffcc);
+            background: linear-gradient(45deg, #ff00cc, #3333ff, #00ffcc);
             background-size: 200% auto;
             color: transparent;
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: gradientMove 4s ease infinite;
-            margin-bottom: 2.5rem;
+            margin-bottom: 3rem;
+            transition: all 0.3s ease;
         }
 
         @keyframes gradientMove {
@@ -46,36 +42,84 @@
         }
 
         .coffret-title:hover {
-            filter: brightness(1.1);
-            transform: scale(1.03);
+            filter: brightness(1.15);
+            transform: scale(1.05);
+        }
+
+        .theme-section {
+            background: var(--light-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            border-left: 6px solid var(--accent-color);
             transition: all 0.3s ease;
+        }
+
+        .theme-section:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .theme-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0 0 1.5rem 0;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .theme-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+            border-radius: 2px;
         }
 
         .coffret-list {
             list-style: none;
             padding: 0;
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
-            justify-content: center;
         }
 
         .coffret-item {
-            background: var(--hover-bg);
-            border-left: 5px solid var(--primary-color);
+            background: var(--secondary-color);
             border-radius: 12px;
-            padding: 1.5rem 2rem;
-            min-width: 250px;
-            max-width: 300px;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 16px rgba(41, 128, 185, 0.1);
+            padding: 1.8rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(41, 128, 185, 0.08);
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .coffret-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
         }
 
         .coffret-item:hover {
-            background: #ebf7ff;
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(41, 128, 185, 0.15);
+            background: var(--hover-bg);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(41, 128, 185, 0.15);
+        }
+
+        .coffret-item:hover::before {
+            transform: scaleX(1);
         }
 
         .coffret-item a {
@@ -84,6 +128,11 @@
             font-weight: 600;
             font-size: 1.1rem;
             display: block;
+            transition: color 0.3s ease;
+        }
+
+        .coffret-item:hover a {
+            color: var(--primary-color);
         }
 
         .empty-msg {
@@ -91,22 +140,36 @@
             text-align: center;
             color: #7f8c8d;
             margin-top: 2rem;
+            padding: 2rem;
+            background: rgba(127, 140, 141, 0.1);
+            border-radius: 8px;
+            border: 2px dashed #bdc3c7;
         }
+
     </style>
 
     <div class="coffret-container">
-        <h2 class="coffret-title">Nos Coffrets</h2>
+        <h2 class="coffret-title">Nos Coffrets par Thème</h2>
 
-        {% if coffret is not empty %}
-            <ul class="coffret-list">
-                {% for c in coffret %}
-                    <li class="coffret-item">
-                        <a href="/coffrets/{{ c.id }}">{{ c.libelle }}</a>
-                    </li>
-                {% endfor %}
-            </ul>
+        {% if themes is not empty %}
+            {% for theme in themes %}
+                <section class="theme-section">
+                    <h3 class="theme-title">{{ theme.libelle }}</h3>
+                    {% if theme.coffretsTypes is not empty %}
+                        <ul class="coffret-list">
+                            {% for coffret in theme.coffretsTypes %}
+                                <li class="coffret-item">
+                                    <a href="/coffrets/{{ coffret.id }}">{{ coffret.libelle }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="empty-msg">Aucun coffret disponible pour ce thème.</p>
+                    {% endif %}
+                </section>
+            {% endfor %}
         {% else %}
-            <p class="empty-msg">Aucun coffret disponible pour le moment.</p>
+            <p class="empty-msg">Aucun thème disponible pour le moment.</p>
         {% endif %}
     </div>
 {% endblock %}

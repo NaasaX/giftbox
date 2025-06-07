@@ -38,6 +38,7 @@ class BoxCreationService implements BoxCreationServiceInterface
         $box->token = base64_encode(random_bytes(32));
         $box->id = (string) Str::uuid();
         $box->created_at = now();
+        $box->updated_at = now();
 
         $this->boxRepository->save($box);
 

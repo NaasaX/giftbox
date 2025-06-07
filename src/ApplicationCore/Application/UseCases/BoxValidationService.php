@@ -5,6 +5,7 @@ use Giftbox\ApplicationCore\Domain\Entities\Box;
 use Giftbox\ApplicationCore\Domain\Entities\Prestation;
 use InvalidArgumentException;
 use DomainException;
+use function Symfony\Component\Clock\now;
 
 class BoxValidationService implements BoxValidationServiceInterface
 {
@@ -20,8 +21,9 @@ class BoxValidationService implements BoxValidationServiceInterface
         }
 
         $prestationCount = $box->prestations()->count();
+        $prixTotal = 0;
+
         if ($prestationCount < 2) {
-            // Lecture des prestations depuis cookie
             $cookieName = "box_{$boxId}_prestations";
             $prestations = [];
 
@@ -41,17 +43,24 @@ class BoxValidationService implements BoxValidationServiceInterface
                 $presta = Prestation::find($prestationId);
                 if ($presta && $quantite > 0) {
                     $box->prestations()->attach($prestationId, ['quantite' => $quantite]);
+                    $prixTotal += $presta->tarif * $quantite;
                 }
+            }
+        } else {
+            foreach ($box->prestations as $presta) {
+                $quantite = $presta->pivot->quantite ?? 1;
+                $prixTotal += $presta->tarif * $quantite;
             }
         }
 
+        $box->montant = $prixTotal;
+        $box->updated_at = now();
         $box->statut = 2;
         $box->save();
 
-        // Supprimer le cookie
-        setcookie("box_{$boxId}_prestations", '', time() - 3600, "/");
+        unset($_SESSION['flash_message']);
 
-        // Nettoyage session se fera dans l'action, pas ici
+        setcookie("box_{$boxId}_prestations", '', time() - 3600, "/");
 
         return $box;
     }

@@ -49,7 +49,7 @@ class PostAjoutPanierAction
         $_SESSION['flash_message'] = "Prestation ajoutée au coffret (en attente de validation).";
 
         $routeParser = RouteContext::fromRequest($request)->getRouteParser();
-        $url = $routeParser->urlFor('box', ['id' => $boxId]);
+        $url = $routeParser->urlFor('catalogue');
 
         return $response->withHeader('Location', $url)->withStatus(302);
     }
