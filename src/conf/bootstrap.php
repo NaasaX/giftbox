@@ -1,8 +1,12 @@
 <?php
 declare(strict_types=1);
 
+use Giftbox\ApplicationCore\Application\UseCases\BoxByTokenService;
+use Giftbox\ApplicationCore\Application\UseCases\BoxByTokenServiceInterface;
 use Giftbox\ApplicationCore\Application\UseCases\BoxCreationService;
 use Giftbox\ApplicationCore\Application\UseCases\BoxCreationServiceInterface;
+use Giftbox\ApplicationCore\Application\UseCases\BoxShareService;
+use Giftbox\ApplicationCore\Application\UseCases\BoxShareServiceInterface;
 use Giftbox\ApplicationCore\Application\UseCases\BoxValidationService;
 use Giftbox\ApplicationCore\Application\UseCases\BoxValidationServiceInterface;
 use Giftbox\ApplicationCore\Application\UseCases\GetBoxDetailsInterface;
@@ -60,6 +64,14 @@ $container->set(UserRepositoryInterface::class, function(){
 
 $container->set(BoxValidationServiceInterface::class, function (){
     return new BoxValidationService();
+});
+
+$container->set(BoxByTokenServiceInterface::class, function (){
+    return new BoxByTokenService();
+});
+
+$container->set(BoxShareServiceInterface::class, function (){
+    return new BoxShareService();
 });
 
 $app = AppFactory::create();

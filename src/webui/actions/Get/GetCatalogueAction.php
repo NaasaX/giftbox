@@ -18,7 +18,7 @@ class GetCatalogueAction
         $flashMessage = $_SESSION['flash_message'] ?? null;
         if ($flashMessage !== null) {
             if ($boxId) {
-                $flashMessage .= " <a href='/box/$boxId'>Voir le coffret</a>";
+                $flashMessage .= " <a href='/box/$boxId'><strong>Voir le coffret</strong></a>";
             }
             unset($_SESSION['flash_message']);
         }

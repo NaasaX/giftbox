@@ -171,6 +171,60 @@
             transform: scale(1.03);
         }
 
+        .btn-show-link {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-show-link:hover {
+            background-color: #0056b3;
+        }
+
+        .shared-link {
+            margin-top: 10px;
+            font-family: monospace;
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-left: 4px solid #007bff;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .shared-link.visible {
+            display: block;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            user-select: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover,
+        .btn-primary:focus {
+            background-color: #1c6ea4; /* Teinte un peu plus foncée */
+            outline: none;
+        }
+
 
     </style>
 
@@ -190,9 +244,31 @@
         <div class="info">
             <p><strong>Libellé :</strong> {{ box.libelle }}</p>
             <p><strong>Description :</strong> {{ box.description ?: 'Aucune description disponible.' }}</p>
-            <p><strong>Créée par :</strong> {{ box.createur ? box.createur.name : 'Inconnu' }}</p>
             <p><strong>Montant :</strong> {{ box.montant|number_format(2, ',', ' ') }} €</p>
-            <p><strong>Etat :</strong> {{ box.statut }}</p>
+            <p><strong>État :</strong>
+                {% if box.statut == 1 %}
+                    Créée
+                {% elseif box.statut == 2 %}
+                    Validée
+                {% elseif box.statut == 3 %}
+                    Livrée
+                {% elseif box.statut == 4 %}
+                    Utilisée
+                {% else %}
+                    Inconnu
+                {% endif %}
+            </p>
+
+            {% if box.statut == 3 or box.statut == 4 %}
+                <button id="show-link-btn" class="btn-show-link">Afficher le lien de partage</button>
+                <div id="shared-link" class="shared-link hidden">
+                    <a href="/box/token/{{ box.token | url_encode }}" target="_blank" rel="noopener noreferrer">/box/token/{{ box.token | url_encode }}
+                    </a>
+                </div>
+            {% endif %}
+
+
+
         </div>
 
         <div class="prestations">
@@ -239,13 +315,26 @@
             {% endif %}
         </div>
 
-        {% if box.statut != 2 %}
+        {% if box.statut == 1 %}
             <form method="post" action="/box/valider">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <button type="submit" class="catalogue-btn">Valider ce coffret</button>
             </form>
         {% endif %}
+
+        {% if box.statut == 2 %}
+            <form method="POST" action="/box/{{ box.id }}/share" style="display:inline;">
+                <button type="submit" class="btn btn-primary">Partager cette box</button>
+            </form>
+        {% endif %}
     </div>
+
+    <script>
+        document.getElementById('show-link-btn')?.addEventListener('click', function () {
+            const linkDiv = document.getElementById('shared-link');
+            linkDiv.classList.toggle('visible');
+        });
+    </script>
 
     {# % include 'catalogueByBox.twig' with {'box': box} % #}
 

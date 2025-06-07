@@ -1,0 +1,120 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+    <style>
+        :root {
+            --primary-color: #2980b9;
+            --secondary-color: #ecf0f1;
+            --text-color: #2c3e50;
+            --accent-color: #1abc9c;
+            --light-bg: #fdfdfd;
+            --font-stack: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .box-container {
+            max-width: 760px;
+            margin: 3rem auto 4rem;
+            background: var(--light-bg);
+            padding: 2.5rem 3rem;
+            border-radius: 18px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+            font-family: var(--font-stack);
+            color: var(--text-color);
+            animation: fadeIn 0.6s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+        }
+        .info p {
+            margin: 1rem 0;
+            font-size: 1.15rem;
+            line-height: 1.7;
+        }
+        .info strong {
+            color: var(--accent-color);
+        }
+        .prestations-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 0.4rem;
+        }
+        .prestations-list {
+            list-style: none;
+            padding: 0;
+        }
+        .prestations-list li {
+            background: #f4f9fd;
+            margin-bottom: 1rem;
+            padding: 1rem 1.2rem;
+            border-left: 6px solid var(--primary-color);
+            border-radius: 12px;
+        }
+        .prestations-list li strong {
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+        .gift-message {
+            background-color: #dff0d8;
+            border: 1px solid #d6e9c6;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0 2rem;
+            border-radius: 10px;
+            color: #3c763d;
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+    </style>
+
+    <div class="box-container" role="main" aria-labelledby="box-title">
+        <h1 id="box-title">Détails de la Box</h1>
+
+        <div class="info">
+            <p><strong>Libellé :</strong> {{ box.libelle }}</p>
+            <p><strong>Description :</strong> {{ box.description ?: 'Aucune description disponible.' }}</p>
+        </div>
+
+        <div class="prestations">
+            <h2 class="prestations-title">Prestations incluses</h2>
+
+            {% if box.prestations is empty %}
+                <p>Aucune prestation associée à cette box.</p>
+            {% else %}
+                {% if box.kdo == 1%}
+                    <div class="gift-message">
+                        🎁 Cette box est un cadeau ! Message : "{{ box.message_kdo|default('Aucun message') }}"
+                    </div>
+                    <ul class="prestations-list">
+                        {% for presta in box.prestations %}
+                            <li>
+                                <strong>{{ presta.libelle }}</strong>
+                                Quantité : {{ presta.pivot.quantite }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <ul class="prestations-list">
+                        {% for presta in box.prestations %}
+                            <li>
+                                <strong>{{ presta.libelle }}</strong>
+                                Tarif : {{ presta.tarif|number_format(2, ',', ' ') }} €<br>
+                                Quantité : {{ presta.pivot.quantite }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

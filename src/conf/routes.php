@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use Giftbox\webui\actions\Get\GetBoxByTokenAction;
 use Giftbox\webui\actions\Get\GetBoxByUserID;
 use Giftbox\webui\actions\Get\GetCategorieAction;
 use Giftbox\webui\actions\Get\GetCategoriesAction;
@@ -12,6 +13,7 @@ use Giftbox\webui\actions\Get\GetHomePageAction;
 use Giftbox\webui\actions\Get\GetPrestationAction;
 use Giftbox\webui\actions\Get\GetBoxDetails;
 use Giftbox\webui\actions\Post\PostSaveCustomBoxAction;
+use Giftbox\webui\actions\Post\PostShareBoxAction;
 use Giftbox\webui\actions\Post\PostSupprimerPrestationAction;
 use Slim\App;
 use Giftbox\webui\actions\Get\GetCatalogueAction;
@@ -34,8 +36,6 @@ return function (App $app, $authProvider, $getBoxDetailsService, $panierService,
 
     // Route 3 : GET /prestation?id=xxxx
     $app->get('/prestation', GetPrestationAction::class);
-
-    $app->get('/prestations', GetAllPrestationAction::class);
 
     // Route 4 : GET /coffrets
     $app->get('/coffrets', GetCoffretsAction::class);
@@ -89,6 +89,11 @@ return function (App $app, $authProvider, $getBoxDetailsService, $panierService,
     // Route pour supprimer une prestation
     $app->post('/box/{id}/prestation/{prestation_id}/delete', PostSupprimerPrestationAction::class);
 
+    // Accéder au coffret grâce au lien de partage
+    $app->get('/box/token/{token:.+}', GetBoxByTokenAction::class);
+
+    // Générer le l'url de partage
+    $app->post('/box/{id}/share', PostShareBoxAction::class);
 
     return $app;
 };

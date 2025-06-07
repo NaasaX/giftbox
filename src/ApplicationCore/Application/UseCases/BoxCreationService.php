@@ -35,7 +35,7 @@ class BoxCreationService implements BoxCreationServiceInterface
             'createur_id' => $userId,
         ]);
 
-        $box->token = base64_encode(random_bytes(32));
+        $box->token = 0;
         $box->id = (string) Str::uuid();
         $box->created_at = now();
         $box->updated_at = now();
