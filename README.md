@@ -33,3 +33,7 @@ Tableau de bord
 | Fonctionnalité 24 | À faire |             |
 | Fonctionnalité 25 | À faire |             |
 | Fonctionnalité 26 | À faire |             |
+
+Conseil :
+
+Activer DOCKER Buildkit avec "set DOCKER_BUILDKIT=1"

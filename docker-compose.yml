@@ -1,6 +1,4 @@
-networks:
-  gift.net:
-    driver: bridge
+version: "3.8"
 
 services:
   mysql-db:
@@ -21,14 +19,37 @@ services:
     image: mysql:8.0
     depends_on:
       - mysql-db
-    entrypoint: |
-      sh -c "
-        sleep 20 && \
-        mysql -h mysql -u root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} < /sql/gift.schema.sql && \
+    entrypoint: >
+      sh -c '
+        until mysqladmin ping -h mysql --silent; do sleep 1; done &&
+        mysql -h mysql -u root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} < /sql/gift.schema.sql &&
         mysql -h mysql -u root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} < /sql/gift.data.sql
-      "
+      '
     volumes:
       - ./src/db:/sql
+    networks:
+      - gift.net
+
+  php:
+    build:
+      context: .
+      dockerfile: build/Dockerfile
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - gift.net
+    depends_on:
+      - mysql-db
+
+  nginx:
+    image: nginx:stable
+    ports:
+      - "8002:80"
+    volumes:
+      - ./:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
     networks:
       - gift.net
 
@@ -47,22 +68,9 @@ services:
     networks:
       - gift.net
 
-  # Application PHP optimisée
-  app:
-    build:
-      context: build
-      dockerfile: 8.4-cli.Dockerfile
-    ports:
-      - "8002:8000"
-    volumes:
-      - ./:/var/www/html
-      - ./public/img:/var/www/html/public/img
-    working_dir: /var/www/html
-    networks:
-      - gift.net
-    depends_on:
-      - mysql-db
-    command: sh -c "composer install && php -S 0.0.0.0:8000 -t /var/www/html/public"
+networks:
+  gift.net:
+    driver: bridge
 
 volumes:
   mysql_data:
