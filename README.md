@@ -18,8 +18,8 @@ Tableau de bord
 | Fonctionnalité 9  | ✅      | Semih & Clément |
 | Fonctionnalité 10 | ✅      | Semih & Clément |
 | Fonctionnalité 11 | ✅      | Semih & Clément |
-| Fonctionnalité 12 | À faire |                 |
-| Fonctionnalité 13 | À faire |                 |
+| Fonctionnalité 12 | À faire |   Raouf &       |
+| Fonctionnalité 13 | À faire |   Raouf &       |
 | Fonctionnalité 14 | ✅      | Marcelin        |
 | Fonctionnalité 15 | ✅      | Marcelin        |
 | Fonctionnalité 16 | ✅      | Marcelin        |

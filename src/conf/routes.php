@@ -23,6 +23,7 @@ use Giftbox\WebUI\Actions\SignoutAction;
 use Giftbox\WebUI\Actions\SignupAction;
 use Giftbox\webui\actions\Post\PostValidateBoxAction;
 
+
 return function (App $app, $authProvider, $getBoxDetailsService, $panierService, $boxValidation): App { // Accept $authProvider as an argument
 
     // Route 0 : GET /
@@ -94,6 +95,9 @@ return function (App $app, $authProvider, $getBoxDetailsService, $panierService,
 
     // Générer le l'url de partage
     $app->post('/box/{id}/share', PostShareBoxAction::class);
+
+    $app->get('/box/access/{token}', GetBoxByTokenAction::class);
+
 
     return $app;
 };

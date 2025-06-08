@@ -62,6 +62,12 @@ class BoxValidationService implements BoxValidationServiceInterface
 
         setcookie("box_{$boxId}_prestations", '', time() - 3600, "/");
 
+        // Génère et enregistre un token unique si la box n'en a pas déjà
+        if (!$box->token) {
+            $box->token = bin2hex(random_bytes(32)); // 64 caractères
+            $box->save();
+        }
+
         return $box;
     }
 }
