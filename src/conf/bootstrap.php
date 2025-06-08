@@ -135,5 +135,7 @@ $app->add($errorMiddleware);
 $routes = require_once __DIR__ . '/routes.php';
 $app = $routes($app, $authProvider, $getBoxDetailsService, $panierService, $boxValidation); // Pass $authProvider to the routes closure
 
+require_once __DIR__ . '/api.php';
+
 // Retourner l’application configurée
 return $app;
