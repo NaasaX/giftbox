@@ -26,10 +26,10 @@ Tableau de bord
 | Fonctionnalité 17 | ✅      | Raouf & Semih   |
 | Fonctionnalité 18 | ✅      | Semih & Raouf   |
 | Fonctionnalité 19 | À faire |                 |
-| Fonctionnalité 20 | À faire |                 |
-| Fonctionnalité 21 | À faire |                 |
-| Fonctionnalité 22 | À faire |                 |
-| Fonctionnalité 23 | À faire |                 |
+| Fonctionnalité 20 | À faire |    Raouf         |
+| Fonctionnalité 21 | À faire |    Raouf        |
+| Fonctionnalité 22 | À faire |     Raouf       |
+| Fonctionnalité 23 | À faire |  Raouf          |
 | Fonctionnalité 24 | À faire |                 |
 | Fonctionnalité 25 | À faire |                 |
 | Fonctionnalité 26 | À faire |                 |
